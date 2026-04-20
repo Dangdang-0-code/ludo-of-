@@ -185,10 +185,10 @@
             else { m.pause(); btn.innerText = "TẮT"; btn.style.background = "#f44336"; }
         }
 
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href);
-            alert("Đã copy link game! Hãy gửi cho bạn bè nhé.");
-        }
+       function copyLink() {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Đã sao chép link game! Hãy gửi cho bạn bè nhé.");
+}
 
         function roll() {
             if(currentDice > 0 || isSelectingTarget) return;
