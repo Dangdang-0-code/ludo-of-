@@ -47,10 +47,9 @@
     from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } 
     to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } 
 }
-    /* Chỉnh chính xác cho mèo Xiêm */
-.pawn[src*="meo_xiem.png"] {
-    width: 32px !important; /* Giảm từ 42px xuống 32px cho thon */
-    height: 42px; 
+   /* Chỉnh riêng cho mèo Xiêm gọn lại một chút */
+img[src*="meo_xiem.png"] {
+    transform: scaleX(0.8); /* Bóp chiều ngang lại 20% */
 }
     </style> 
 </head>
