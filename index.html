@@ -102,7 +102,7 @@
         <div class="card">
             <h3 style="color: var(--dp)">💡 BẠN CÓ BIẾT?</h3>
             <p id="fact-txt" style="font-size: 18px; line-height: 1.6; min-height: 80px;"></p>
-            <div id="timer-display" style="font-size: 40px; font-weight: 900; color: var(--dp);">10</div>
+            <div id="timer-display" style="font-size: 40px; font-weight: 900; color: var(--dp);">5</div>
             <button id="ok-btn" disabled onclick="closeFact()" style="background: #bbb; border: none; padding: 12px 40px; border-radius: 20px; color: white; cursor: pointer;">HÃY ĐỌC KỸ...</button>
         </div>
     </div>
@@ -115,7 +115,7 @@
             document.getElementById('fill').style.width = '100%';
             setTimeout(() => {
                 document.getElementById('btn-start').style.display = 'block';
-            }, 2000); // Sau 2 giây hiện nút Bắt đầu
+            }, 2000); 
         };
 
         function enterGame() {
@@ -124,12 +124,11 @@
                 document.getElementById('loading-screen').style.display = 'none';
                 document.getElementById('game-content').style.display = 'flex';
                 setTimeout(() => document.getElementById('game-content').style.opacity = '1', 50);
-                init(); // Khởi tạo bàn cờ
+                init(); 
                 updatePawnStatus();
             }, 500);
         }
 
-        // GIỮ NGUYÊN TOÀN BỘ LOGIC GAME CỦA BẠN DƯỚI ĐÂY
         const paths = [
             [{t:6, l:44.5}, {t:13, l:44.5}, {t:20, l:44.5}, {t:27, l:44.5}, {t:34, l:44.5}, {t:41, l:38}, {t:41, l:31}, {t:41, l:24}, {t:41, l:17}, {t:41, l:10}],
             [{t:44.5, l:94}, {t:44.5, l:87}, {t:44.5, l:80}, {t:44.5, l:73}, {t:44.5, l:66}, {t:38, l:59}, {t:31, l:59}, {t:24, l:59}, {t:17, l:59}, {t:10, l:59}],
@@ -137,15 +136,17 @@
             [{t:94, l:55.5}, {t:87, l:55.5}, {t:80, l:55.5}, {t:73, l:55.5}, {t:66, l:55.5}, {t:59, l:62}, {t:59, l:69}, {t:59, l:76}, {t:59, l:83}, {t:59, l:90}]
         ];
         const homePositions = [
-            {t:[17,17,28,28], l:[17,28,17,28]}, {t:[17,17,28,28], l:[72,83,72,83]},
-            {t:[72,72,83,83], l:[17,28,17,28]}, {t:[72,72,83,83], l:[72,83,72,83]}
-        ];
+    {t:[17,17,28,28], l:[17,28,17,28]}, // Đội 0: Mèo Đen (Vẫn ở trên bên trái)
+    {t:[17,17,28,28], l:[72,83,72,83]}, // Đội 1: Mèo Xiêm (Bây giờ ở trên bên phải)
+    {t:[72,72,83,83], l:[17,28,17,28]}, // Đội 2: Mèo Vàng (Vẫn ở dưới bên trái)
+    {t:[72,72,83,83], l:[72,83,72,83]}  // Đội 3: Mèo Trắng (Bây giờ ở dưới bên phải)
+];
         
         const allFacts = [
-            "Sứa bất tử có thể đảo ngược chu kỳ sống từ trưởng thành trở lại dạng polyp, giúp chúng gần như bất tử về mặt sinh học.", ": Bọ hung có thể kéo vật nặng gấp 1.141 lần trọng lượng cơ thể.", "Một số loài rùa biển và hải sâm có khả năng hô hấp qua đường hậu môn.", "Bạch tuộc có 3 tim, 9 bộ não, máu của chúng màu xanh và 2 tim bơm máu lên mang, 1 tim bơm máu đi khắp cơ thể.", "Cú đấm của tôm tít nhanh đến mức tạo ra bọt khí đạt nhiệt độ gần bằng bề mặt Mặt Trời.", 
+            "Sứa bất tử có thể đảo ngược chu kỳ sống từ trưởng thành trở lại dạng polyp, giúp chúng gần như bất tử về mặt sinh học.", "Bọ hung có thể kéo vật nặng gấp 1.141 lần trọng lượng cơ thể.", "Một số loài rùa biển và hải sâm có khả năng hô hấp qua đường hậu môn.", "Bạch tuộc có 3 tim, 9 bộ não, máu của chúng màu xanh và 2 tim bơm máu lên mang, 1 tim bơm máu đi khắp cơ thể.", "Cú đấm của tôm tít nhanh đến mức tạo ra bọt khí đạt nhiệt độ gần bằng bề mặt Mặt Trời.", 
             "Voi sử dụng sóng hạ âm để giao tiếp ở khoảng cách hàng km.", "Cá sấu nước mặn có lực cắn lên đến 16.460 newton.", "Vượn cáo có khả năng uống các loại cây chứa độc tố mà không hề bị say.", "Chim ruồi là loài chim duy nhất có thể bay lùi.", "Xương lợn biển rất dày và nặng, giúp chúng giữ trọng lượng khi lặn xuống đáy nước.", 
             "Lông gấu bắc cực thực chất là trong suốt, da của chúng màu đen để hấp thụ nhiệt.", "Bò có thể có bạn thân và sẽ bị stress nếu bị tách rời.", "Vằn của mỗi con ngựa vằn là duy nhất, giống như vân tay người.", "Cá heo sử dụng tiếng huýt đặc trưng để gọi nhau.", "Sâu bướm có thể ăn gấp hàng nghìn lần trọng lượng cơ thể trong vài ngày.",
-            "Diều hâu Úc biết cầm cành cây cháy để đốt rừng, ép mồi ra ngoài.", "Chú cừu Chris từng lập kỷ lục với bộ lông nặng hơn 40kg.", "Gián có thể sống sót vài ngày mà không có đầu cho đến khi chết vì đói.", "Bướm có thể thụ thể vị giác trên chân.", ": Mèo dành 70% cuộc đời để ngủ.",
+            "Diều hâu Úc biết cầm cành cây cháy để đốt rừng, ép mồi ra ngoài.", "Chú cừu Chris từng lập kỷ lục với bộ lông nặng hơn 40kg.", "Gián có thể sống sót vài ngày mà không có đầu cho đến khi chết vì đói.", "Bướm có thể thụ thể vị giác trên chân.", "Mèo dành 70% cuộc đời để ngủ.",
             "Theo thuyết tương đối, thời gian trôi chậm hơn đối với phi hành gia.", "Áp suất cao có thể tạo ra mưa kim cương trên các hành tinh khí như Sao Hải Vương.", "Hươu cao cổ có nguy cơ bị sét đánh cao gấp 30 lần con người.", "Một số loại đá có thể nổi trên nước.", "Lỗ đen siêu trọng phát ra âm thanh thấp hơn 57 quãng tám so với Đô trung.",
             "Con người có khoảng 50% ADN giống với chuối.", "Sao Kim quay quanh Mặt Trời nhanh hơn nó tự quay quanh trục.", "Có một vũ trụ được mô tả có mùi giống thịt nướng hoặc kim loại nóng.", "Lượng nước trên Trái Đất hôm nay chính là nước mà khủng long đã uống.", "Hàng triệu virus rơi xuống Trái Đất mỗi mét vuông mỗi ngày.",
             "Có những hòn đá tự di chuyển trên sa mạc mà không có ai chạm vào.", "Diện tích bề mặt Mặt Trăng nhỏ hơn bề mặt châu Á.", "Các nhà khoa học tin rằng Trái Đất từng có một mặt trăng thứ hai.", "Ánh sáng mất hơn 8 phút để đi từ Mặt Trời đến Trái Đất.", "Con người nặng hơn ở cực Bắc so với ở xích đạo.",
@@ -156,11 +157,10 @@
 
         let factPool = [...allFacts];
         let currentDice = 0, turn = 0, itemsOnBoard = [], isSelectingTarget = false;
-        const teamNames = ["Mèo Đen", "Mèo Trắng", "Mèo Vàng", "Mèo Xiêm"];
-
+        const teamNames = ["Mèo Đen", "Mèo Xiêm", "Mèo Vàng", "Mèo Trắng"];
         function init() {
             const box = document.getElementById('game-box');
-            const imgs = ['meo_den.png', 'meo_trang.png', 'meo_vang.png', 'meo_xiem.png'];
+            const imgs = ['meo_den.png', 'meo_xiem.png', 'meo_vang.png', 'meo_trang.png'];
             imgs.forEach((img, tIdx) => {
                 for(let i=0; i<4; i++) {
                     const m = document.createElement('img');
@@ -185,10 +185,10 @@
             else { m.pause(); btn.innerText = "TẮT"; btn.style.background = "#f44336"; }
         }
 
-       function copyLink() {
-    navigator.clipboard.writeText(window.location.href);
-    alert("Đã sao chép link game! Hãy gửi cho bạn bè nhé.");
-}
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href);
+            alert("Đã sao chép link game! Hãy gửi cho bạn bè nhé.");
+        }
 
         function roll() {
             if(currentDice > 0 || isSelectingTarget) return;
@@ -211,7 +211,8 @@
             const fact = factPool.splice(Math.floor(Math.random()*factPool.length), 1)[0];
             document.getElementById('fact-txt').innerText = fact;
             openModal('fact-modal');
-            let s = 10;
+            let s = 5; // Đã đổi thành 5 giây
+            document.getElementById('timer-display').innerText = s;
             const btn = document.getElementById('ok-btn');
             btn.disabled = true; btn.style.background = "#bbb"; btn.innerText = "HÃY ĐỌC KỸ...";
             const timer = setInterval(() => {
@@ -302,8 +303,16 @@
 
         function updatePawnStatus() {
             document.querySelectorAll('.pawn').forEach(p => {
-                p.style.opacity = parseInt(p.dataset.team) === turn ? "1" : "0.5";
-                p.classList.toggle('active', parseInt(p.dataset.team) === turn);
+                const isCurrentTurn = parseInt(p.dataset.team) === turn;
+                p.style.opacity = isCurrentTurn ? "1" : "0.5";
+                p.classList.toggle('active', isCurrentTurn);
+                if (parseInt(p.dataset.team) === 0 && isCurrentTurn) {
+                    p.style.filter = "drop-shadow(0 0 12px #000000) brightness(1.2)";
+                } else if (isCurrentTurn) {
+                    p.style.filter = "drop-shadow(0 0 8px var(--dp))";
+                } else {
+                    p.style.filter = "none";
+                }
             });
         }
     </script>
