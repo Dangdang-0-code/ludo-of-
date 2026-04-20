@@ -93,7 +93,12 @@ img[src*="meo_xiem.png"] {
             <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 10px;">ĐÃ HIỂU</button>
         </div>
     </div>
-
+#items-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 60; /* Đảm bảo con số này lớn hơn z-index của bàn cờ nếu có */
+    pointer-events: none;
+}
     <div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
         <div class="card" onclick="event.stopPropagation()">
             <h2 style="color: var(--dp); margin-top:0;">⚙️ CÀI ĐẶT</h2>
@@ -333,11 +338,12 @@ img[src*="meo_xiem.png"] {
                     const data = availablePositions[i];
                     const type = types[i];
                     const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_706037.png';
-                    const itemEl = document.createElement('div');
-                    itemEl.className = 'item ' + type;
-                    itemEl.style.backgroundImage = `url(${imgUrl})`;
-                    itemEl.style.top = data.pos.t + "%";
-                    itemEl.style.left = data.pos.l + "%";
+                   const itemEl = document.createElement('div');
+itemEl.className = 'item ' + type;
+itemEl.style.backgroundImage = `url(${imgUrl})`; // Bỏ dấu nháy đơn bên trong
+itemEl.style.top = data.pos.t + "%";
+itemEl.style.left = data.pos.l + "%";
+itemEl.style.zIndex = "150"; // Thêm dòng này để nó nổi lên trên cả quân cờ nếu cần
                     
                     layer.appendChild(itemEl);
                     itemsOnBoard.push({ team: data.team, step: data.step, type: type, el: itemEl });
