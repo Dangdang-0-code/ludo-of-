@@ -312,6 +312,7 @@
                 });
             });
 
+    // SỬA DÒNG 315: Bỏ dấu ngoặc nhọn để tự động return
             availablePositions.sort(() => Math.random() - 0.5);
 
             const types = ['fish', 'fish', 'cheese', 'cheese', 'cheese', 'cheese'];
@@ -331,28 +332,7 @@
                     itemsOnBoard.push({ team: data.team, step: data.step, type: type, el: itemEl });
                 }
             }
-        } 
-
-    availablePositions.sort(() => Math.random() - 0.5);
-
-    const types = ['fish', 'fish', 'cheese', 'cheese', 'cheese', 'cheese'];
-    for (let i = 0; i < types.length; i++) {
-        if (availablePositions[i]) {
-            const data = availablePositions[i];
-            const type = types[i];
-            const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_706037.png';
-            
-            const itemEl = document.createElement('div');
-            itemEl.className = 'item ' + type;
-            itemEl.style.backgroundImage = `url(${imgUrl})`;
-            itemEl.style.top = data.pos.t + "%";
-            itemEl.style.left = data.pos.l + "%";
-            
-            layer.appendChild(itemEl);
-            itemsOnBoard.push({ team: data.team, step: data.step, type: type, el: itemEl });
-        }
-    }
-}
+        } // Đóng hàm spawnItems
             const layer = document.getElementById('items-layer'); layer.innerHTML = '';
             itemsOnBoard.forEach(it => {
                 const el = document.createElement('div'); el.className = 'item';
