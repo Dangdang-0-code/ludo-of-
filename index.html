@@ -332,9 +332,7 @@ img[src*="meo_xiem.png"] {
                 if (availablePositions[i]) {
                     const data = availablePositions[i];
                     const type = types[i];
-                    // Tìm dòng này trong hàm spawnItems và sửa lại tên file ảnh
-const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_706037.png';
-                    
+                    const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_706037.png';
                     const itemEl = document.createElement('div');
                     itemEl.className = 'item ' + type;
                     itemEl.style.backgroundImage = `url('${imgUrl}')`; // Thêm dấu nháy đơn bao quanh url
