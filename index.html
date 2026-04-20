@@ -333,14 +333,6 @@
                 }
             }
         } // Đóng hàm spawnItems
-            const layer = document.getElementById('items-layer'); layer.innerHTML = '';
-            itemsOnBoard.forEach(it => {
-                const el = document.createElement('div'); el.className = 'item';
-                el.style.backgroundImage = (it.type === 'fish') ? "url('image_492b85.png')" : "url('image_492b6a.png')";
-                el.style.top = paths[it.team][it.step].t + "%"; el.style.left = paths[it.team][it.step].l + "%";
-                layer.appendChild(el);
-            });
-        }
 
         function updatePawnStatus() {
             document.querySelectorAll('.pawn').forEach(p => {
