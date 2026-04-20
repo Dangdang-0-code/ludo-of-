@@ -47,12 +47,11 @@
     from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } 
     to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } 
 }
-    /* Chỉnh riêng cho mèo Xiêm để bớt "ú" */
-        img[src*="meo_xiem.png"] {
-            width: 80% !important; /* Thu hẹp chiều ngang */
-            height: auto;
-            margin: 0 auto;
-        }
+    /* Chỉnh chính xác cho mèo Xiêm */
+.pawn[src*="meo_xiem.png"] {
+    width: 32px !important; /* Giảm từ 42px xuống 32px cho thon */
+    height: 42px; 
+}
     </style> 
 </head>
 <body>
@@ -310,29 +309,36 @@
             layer.innerHTML = '';
             
             let availablePositions = [];
+            // Lấy tất cả các ô trên đường đi của 4 đội
             paths.forEach((path, teamIdx) => {
                 path.forEach((pos, stepIdx) => {
-                    if (stepIdx > 0 && stepIdx < path.length - 1) {
-                        availablePositions.push({ team: teamIdx, step: stepIdx, pos: pos });
+                    // Không đặt ở ô xuất phát (0) và ô cuối cùng
+                    if (stepIdx > 1 && stepIdx < path.length - 1) {
+                        // Kiểm tra xem có quân cờ nào đang đứng ở đây không
+                        const isOccupied = document.querySelector(`.pawn[data-team="${teamIdx}"][data-step="${stepIdx}"]`);
+                        if (!isOccupied) {
+                            availablePositions.push({ team: teamIdx, step: stepIdx, pos: pos });
+                        }
                     }
                 });
             });
 
+            // Trộn ngẫu nhiên vị trí
             availablePositions.sort(() => Math.random() - 0.5);
 
-            // ĐÃ CHỈNH: 4 cá và 4 phô mai cho bằng nhau
+            // Đảm bảo 4 Cá - 4 Phô mai
             const types = ['fish', 'fish', 'fish', 'fish', 'cheese', 'cheese', 'cheese', 'cheese'];
             
             for (let i = 0; i < types.length; i++) {
                 if (availablePositions[i]) {
                     const data = availablePositions[i];
                     const type = types[i];
-                    // ĐÃ SỬA: Tên file ảnh phô mai chuẩn
-                    const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_706037.png';
+                    // Tìm dòng này trong hàm spawnItems và sửa lại tên file ảnh
+const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_706037.png';
                     
                     const itemEl = document.createElement('div');
                     itemEl.className = 'item ' + type;
-                    itemEl.style.backgroundImage = `url(${imgUrl})`;
+                    itemEl.style.backgroundImage = `url('${imgUrl}')`; // Thêm dấu nháy đơn bao quanh url
                     itemEl.style.top = data.pos.t + "%";
                     itemEl.style.left = data.pos.l + "%";
                     
