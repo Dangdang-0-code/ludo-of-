@@ -33,7 +33,16 @@
         
         @keyframes pulseRed { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.25); } }
         @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 25% { transform: translate(-50%, -50%) rotate(5deg); } 75% { transform: translate(-50%, -50%) rotate(-5deg); } }
-        .item { width: 35px; height: 35px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
+        .item { 
+    width: 25px;   /* Giảm từ 35px xuống 25px */
+    height: 25px;  /* Giảm từ 35px xuống 25px */
+    position: absolute; 
+    z-index: 50; 
+    transform: translate(-50%, -50%) rotate(20deg); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    animation: itemPop 0.8s infinite alternate; 
+}
        @keyframes itemPop { 
     from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } 
     to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } 
