@@ -47,10 +47,19 @@
     from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } 
     to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } 
 }
-   /* Chỉnh riêng cho mèo Xiêm gọn lại một chút */
-img[src*="meo_xiem.png"] {
-    transform: scaleX(0.8); /* Bóp chiều ngang lại 20% */
-}
+  /* Chỉnh cho mèo Xiêm gọn lại */
+        img[src*="meo_xiem.png"] {
+            transform: scaleX(0.8);
+        }
+
+        /* ĐÂY LÀ ĐOẠN QUAN TRỌNG ĐỂ HIỆN PHÔ MAI */
+        #items-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 60;
+            pointer-events: none;
+        }
+        
     </style> 
 </head>
 <body>
@@ -93,12 +102,7 @@ img[src*="meo_xiem.png"] {
             <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 10px;">ĐÃ HIỂU</button>
         </div>
     </div>
-#items-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 60; /* Đảm bảo con số này lớn hơn z-index của bàn cờ nếu có */
-    pointer-events: none;
-}
+    
     <div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
         <div class="card" onclick="event.stopPropagation()">
             <h2 style="color: var(--dp); margin-top:0;">⚙️ CÀI ĐẶT</h2>
