@@ -281,48 +281,30 @@
         function spawnItems() {
             const layer = document.getElementById('items-layer');
             if (!layer) return;
-            layer.innerHTML = ''; 
-            itemsOnBoard = [];
-            
+            layer.innerHTML = ''; itemsOnBoard = [];
             let available = [];
-            // Quét toàn bộ đường đi của 4 team
-            paths.forEach((path, tIdx) => {
-                path.forEach((pos, sIdx) => {
-                    // Bỏ qua ô xuất phát (0,1) và ô sát đích để công bằng
-                    if (sIdx > 1 && sIdx < path.length - 1) {
-                        available.push({ team: tIdx, step: sIdx, pos: pos });
-                    }
-                });
-            });
-
-            // Trộn ngẫu nhiên các vị trí ô trống
+            paths.forEach((path, t) => path.forEach((pos, s) => {
+                if (s > 1 && s < path.length - 1) available.push({t, s, pos});
+            }));
             available.sort(() => Math.random() - 0.5);
 
-            // Tăng số lượng item lên 12 (6 Cá, 6 Phô mai)
-            const itemTypes = [
-                'fish', 'fish', 'fish', 'fish', 'fish', 'fish',
-                'cheese', 'cheese', 'cheese', 'cheese', 'cheese', 'cheese'
+            // Chỉ sửa dòng này để rải 12 món (6 Cá, 6 Phô mai)
+            const types = [
+                'fish','fish','fish','fish','fish','fish',
+                'cheese','cheese','cheese','cheese','cheese','cheese'
             ];
-
-            itemTypes.forEach((type, i) => {
+            
+            types.forEach((type, i) => {
                 if (available[i]) {
                     const item = document.createElement('div');
                     item.className = 'item ' + type;
-                    // Dùng ảnh vật phẩm của nhóm
                     item.style.backgroundImage = `url(${type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png'})`;
-                    item.style.top = available[i].pos.t + "%"; 
-                    item.style.left = available[i].pos.l + "%";
-                    
+                    item.style.top = available[i].pos.t + "%"; item.style.left = available[i].pos.l + "%";
                     layer.appendChild(item);
-                    itemsOnBoard.push({ 
-                        team: available[i].team, 
-                        step: available[i].step, 
-                        type: type 
-                    });
+                    itemsOnBoard.push({ team: available[i].t, step: available[i].s, type });
                 }
             });
         }
-
         function updatePawnStatus() {
             document.querySelectorAll('.pawn').forEach(p => {
                 const isCurrent = parseInt(p.dataset.team) === turn;
