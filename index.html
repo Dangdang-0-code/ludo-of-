@@ -35,27 +35,40 @@
         .item { width: 25px; height: 25px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
         @keyframes itemPop { from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } }
 
-     /* 1. Ép dáng cho mèo Xiêm nhưng phải giữ lại Transition */
+     /* 1. Thiết lập cho mèo Xiêm: Chỉ ép tỉ lệ, không ép vị trí */
 img.pawn[src*="meo_xiem.png"] {
-    width: 34px !important;  /* Gầy hơn */
-    height: 42px !important; /* Cao bằng các bạn */
-    object-fit: contain;
-    /* Phải có dòng dưới này thì mèo mới "lướt" đi được */
+    transform: translate(-50%, -50%) scaleX(0.8);
+}
+
+/* 2. Khi lướt đi: Phải giữ được dáng gầy 0.8 */
+img.pawn[src*="meo_xiem.png"]:not(.active):not(.targetable) {
     transition: top 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28), 
-                left 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28),
-                filter 0.3s ease;
+                left 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
-/* 2. Hiệu ứng rung khi tới lượt */
+/* 3. Khi tới lượt: Rung và Sáng (Không dùng !important để tránh kẹt) */
 img.pawn[src*="meo_xiem.png"].active {
-    animation: shake 0.6s infinite !important;
-    filter: drop-shadow(0 0 8px var(--dp)) !important;
+    animation: shakeXiem 0.6s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px var(--dp));
+    z-index: 200;
 }
 
-/* 3. Hiệu ứng khi bị nhắm đá */
+/* 4. Định nghĩa lại các chuyển động riêng cho mèo Xiêm */
+@keyframes shakeXiem {
+    0%, 100% { transform: translate(-50%, -50%) scaleX(0.8) rotate(0deg); }
+    25% { transform: translate(-50%, -50%) scaleX(0.8) rotate(5deg); }
+    75% { transform: translate(-50%, -50%) scaleX(0.8) rotate(-5deg); }
+}
+
+@keyframes pulseXiem {
+    0%, 100% { transform: translate(-50%, -50%) scaleX(0.8) scale(1); }
+    50% { transform: translate(-50%, -50%) scaleX(0.8) scale(1.2); }
+}
+
+/* Hiệu ứng khi bị nhắm đá */
 img.pawn[src*="meo_xiem.png"].targetable {
-    animation: pulseRed 0.5s infinite !important;
-    filter: drop-shadow(0 0 15px red) !important;
+    animation: pulseXiem 0.5s infinite ease-in-out;
+    filter: drop-shadow(0 0 15px red);
 }
         #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
     </style> 
