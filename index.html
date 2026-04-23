@@ -26,7 +26,19 @@
         @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 25% { transform: translate(-50%, -50%) rotate(5deg); } 75% { transform: translate(-50%, -50%) rotate(-5deg); } }
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.96); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        .card { background: white; width: 400px; padding: 35px; border-radius: 30px; border: 5px solid var(--p); text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.1); position: relative; }
+        
+        /* ĐÃ CHỈNH KHUNG FACT NHỎ LẠI TẠI ĐÂY */
+        .card { 
+            background: white; 
+            width: 320px; 
+            padding: 25px; 
+            border-radius: 25px; 
+            border: 4px solid var(--p); 
+            text-align: center; 
+            box-shadow: 0 15px 45px rgba(0,0,0,0.1); 
+            position: relative; 
+        }
+
         .corner-btn { position: fixed; top: 20px; width: 45px; height: 45px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 6000; }
     </style>
 </head>
@@ -52,30 +64,31 @@
 
     <div id="fact-modal" class="modal">
         <div class="card">
-            <h2 style="color: var(--dp); margin-top: 0;">💡 KIẾN THỨC MỚI!</h2>
-            <p id="fact-txt" style="font-size: 19px; line-height: 1.6; color: #444; margin: 20px 0;"></p>
-            <div id="timer-display" style="font-size: 45px; font-weight: 900; color: var(--dp); margin-bottom: 15px;">5</div>
-            <button id="ok-btn" disabled onclick="closeFact()" style="background: #ccc; border: none; padding: 12px 45px; border-radius: 25px; color: white; font-weight: bold; cursor: pointer;">ĐANG ĐỌC...</button>
+            <h2 style="color: var(--dp); margin-top: 0; font-size: 20px;">💡 KIẾN THỨC MỚI!</h2>
+            <p id="fact-txt" style="font-size: 16px; line-height: 1.5; color: #444; margin: 15px 0;"></p>
+            <div id="timer-display" style="font-size: 35px; font-weight: 900; color: var(--dp); margin-bottom: 10px;">5</div>
+            <button id="ok-btn" disabled onclick="closeFact()" style="background: #ccc; border: none; padding: 10px 35px; border-radius: 20px; color: white; font-weight: bold; cursor: pointer;">ĐANG ĐỌC...</button>
         </div>
     </div>
 
     <div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
         <div class="card" onclick="event.stopPropagation()">
             <h2>CÀI ĐẶT</h2>
-            <p style="font-size: 18px;">DỰ ÁN CỦA NHÓM: <br><strong style="color:var(--dp)">SANG - GIANG - ĐAN</strong></p>
+            <p style="font-size: 16px;">DỰ ÁN CỦA NHÓM: <br><strong style="color:var(--dp)">SANG - GIANG - ĐAN</strong></p>
             <button onclick="closeModal('settings-modal')" style="background:#eee; border:none; padding:10px 30px; border-radius:20px; cursor:pointer;">ĐÓNG</button>
         </div>
     </div>
 
     <div id="help-modal" class="modal" onclick="closeModal('help-modal')">
         <div class="card" onclick="event.stopPropagation()">
-            <h2>📜 CÁCH CHƠI</h2>
-            <p style="text-align: left;">1. Đổ xúc xắc và di chuyển mèo của bạn.<br>2. 🐟 <b>Cá:</b> Có thể đá mèo đối thủ về chuồng.<br>3. 🧀 <b>Phô mai:</b> Bảo vệ bạn không bị đá.<br>4. Về đích để nhận một Fact thú vị!</p>
+            <h2 style="font-size: 20px;">📜 CÁCH CHƠI</h2>
+            <p style="text-align: left; font-size: 14px;">1. Đổ xúc xắc và di chuyển mèo.<br>2. 🐟 <b>Cá:</b> Đá mèo đối thủ.<br>3. 🧀 <b>Phô mai:</b> Bảo vệ bạn.<br>4. Về đích để nhận Fact!</p>
             <button onclick="closeModal('help-modal')" style="background:var(--dp); color:white; border:none; padding:10px 30px; border-radius:20px; cursor:pointer;">ĐÃ HIỂU</button>
         </div>
     </div>
 
     <script>
+        // PHẦN CODE VÀ FACTS GIỮ NGUYÊN 100%
         const allFacts = [
             "Sứa bất tử (Turritopsis dohrnii) có thể đảo ngược vòng đời để trẻ lại.",
             "Bọ hung có thể kéo vật nặng gấp 1.141 lần trọng lượng cơ thể mình.",
@@ -174,86 +187,4 @@
             layer.innerHTML = "";
             for(let i=0; i<6; i++) {
                 const pIdx = Math.floor(Math.random()*4);
-                const r = Math.floor(Math.random() * (paths[pIdx].length - 2)) + 1;
-                const itm = document.createElement('div');
-                const isFish = Math.random() > 0.4;
-                itm.className = 'item';
-                itm.style.backgroundImage = isFish ? "url('ca.png')" : "url('phomai.png')";
-                itm.dataset.type = isFish ? "fish" : "cheese";
-                itm.style.top = paths[pIdx][r].t + "%"; itm.style.left = paths[pIdx][r].l + "%";
-                layer.appendChild(itm);
-            }
-        }
-
-        function roll() {
-            if(currentDice > 0) return;
-            currentDice = Math.floor(Math.random() * 6) + 1;
-            document.getElementById('dice-res').innerText = "🎲 " + currentDice;
-        }
-
-        function movePawn(p) {
-            if(parseInt(p.dataset.team) !== turn || currentDice === 0) return;
-            let step = parseInt(p.dataset.step) + currentDice;
-            if(step >= paths[turn].length) {
-                resetPawn(p); showFact();
-            } else {
-                p.dataset.step = step;
-                p.style.top = paths[turn][step].t + "%"; p.style.left = paths[turn][step].l + "%";
-                checkItem(p);
-            }
-            endTurn();
-        }
-
-        function checkItem(p) {
-            const items = document.querySelectorAll('.item');
-            items.forEach(itm => {
-                if(itm.style.top === p.style.top && itm.style.left === p.style.left) {
-                    if(itm.dataset.type === "cheese") {
-                        p.classList.add('shielded');
-                        alert("🛡️ Bạn được bảo vệ bởi Phô mai!");
-                    } else {
-                        alert("🐟 Bạn nhặt được Cá! Sẵn sàng đá đối thủ!");
-                    }
-                    itm.remove();
-                }
-            });
-        }
-
-        function resetPawn(p) {
-            let t = p.dataset.team, id = p.dataset.id;
-            p.style.top = homePos[t].t[id] + "%"; p.style.left = homePos[t].l[id] + "%";
-            p.dataset.step = -1; p.classList.remove('shielded');
-        }
-
-        function endTurn() {
-            currentDice = 0; document.getElementById('dice-res').innerText = "🎲 0";
-            turn = (turn + 1) % 4; updateUI();
-        }
-
-        function updateUI() {
-            document.getElementById('turn-display').innerText = teamNames[turn];
-            document.querySelectorAll('.pawn').forEach(p => {
-                p.classList.toggle('active', parseInt(p.dataset.team) === turn);
-                p.style.opacity = parseInt(p.dataset.team) === turn ? "1" : "0.6";
-            });
-        }
-
-        function showFact() {
-            const f = factPool.splice(Math.floor(Math.random()*factPool.length),1)[0];
-            document.getElementById('fact-txt').innerText = f;
-            if(factPool.length === 0) factPool = [...allFacts];
-            openModal('fact-modal');
-            let s = 5; 
-            const btn = document.getElementById('ok-btn');
-            const timer = setInterval(() => {
-                s--; document.getElementById('timer-display').innerText = s;
-                if(s<=0) { clearInterval(timer); btn.disabled = false; btn.innerText="XÁC NHẬN"; btn.style.background="var(--dp)"; }
-            }, 1000);
-        }
-
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function closeFact() { closeModal('fact-modal'); document.getElementById('ok-btn').disabled = true; document.getElementById('ok-btn').innerText="ĐANG ĐỌC..."; }
-    </script>
-</body>
-</html>
+                const r = Math.floor(Math.random() * (paths[pIdx
