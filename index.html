@@ -111,10 +111,12 @@
 
     <audio id="bgMusic" loop src="pixel-drift-pecan-pie-main-version-41106-02-09.mp3"></audio>
 
-    <script>
+<script>
         window.onload = () => {
             document.getElementById('fill').style.width = '100%';
-            setTimeout(() => { document.getElementById('btn-start').style.display = 'block'; }, 2000); 
+            setTimeout(() => { 
+                document.getElementById('btn-start').style.display = 'block'; 
+            }, 2000); 
         };
 
         function enterGame() {
@@ -140,16 +142,8 @@
         ];
         
         const allFacts = [
-            "Sứa bất tử có thể đảo ngược chu kỳ sống từ trưởng thành trở lại dạng polyp, giúp chúng gần như bất tử về mặt sinh học.", "Bọ hung có thể kéo vật nặng gấp 1.141 lần trọng lượng cơ thể.", "Một số loài rùa biển và hải sâm có khả năng hô hấp qua đường hậu môn.", "Bạch tuộc có 3 tim, 9 bộ não, máu của chúng màu xanh và 2 tim bơm máu lên mang, 1 tim bơm máu đi khắp cơ thể.", "Cú đấm của tôm tít nhanh đến mức tạo ra bọt khí đạt nhiệt độ gần bằng bề mặt Mặt Trời.", 
-            "Voi sử dụng sóng hạ âm để giao tiếp ở khoảng cách hàng km.", "Cá sấu nước mặn có lực cắn lên đến 16.460 newton.", "Vượn cáo có khả năng uống các loại cây chứa độc tố mà không hề bị say.", "Chim ruồi là loài chim duy nhất có thể bay lùi.", "Xương lợn biển rất dày và nặng, giúp chúng giữ trọng lượng khi lặn xuống đáy nước.", 
-            "Lông gấu bắc cực thực chất là trong suốt, da của chúng màu đen để hấp thụ nhiệt.", "Bò có thể có bạn thân và sẽ bị stress nếu bị tách rời.", "Vằn của mỗi con ngựa vằn là duy nhất, giống như vân tay người.", "Cá heo sử dụng tiếng huýt đặc trưng để gọi nhau.", "Sâu bướm có thể ăn gấp hàng nghìn lần trọng lượng cơ thể trong vài ngày.",
-            "Diều hâu Úc biết cầm cành cây cháy để đốt rừng, ép mồi ra ngoài.", "Chú cừu Chris từng lập kỷ lục với bộ lông nặng hơn 40kg.", "Gián có thể sống sót vài ngày mà không có đầu cho đến khi chết vì đói.", "Bướm có thể thụ thể vị giác trên chân.", "Mèo dành 70% cuộc đời để ngủ.",
-            "Theo thuyết tương đối, thời gian trôi chậm hơn đối với phi hành gia.", "Áp suất cao có thể tạo ra mưa kim cương trên các hành tinh khí như Sao Hải Vương.", "Hươu cao cổ có nguy cơ bị sét đánh cao gấp 30 lần con người.", "Một số loại đá có thể nổi trên nước.", "Lỗ đen siêu trọng phát ra âm thanh thấp hơn 57 quãng tám so với Đô trung.",
-            "Con người có khoảng 50% ADN giống với chuối.", "Sao Kim quay quanh Mặt Trời nhanh hơn nó tự quay quanh trục.", "Có một vũ trụ được mô tả có mùi giống thịt nướng hoặc kim loại nóng.", "Lượng nước trên Trái Đất hôm nay chính là nước mà khủng long đã uống.", "Hàng triệu virus rơi xuống Trái Đất mỗi mét vuông mỗi ngày.",
-            "Có những hòn đá tự di chuyển trên sa mạc mà không có ai chạm vào.", "Diện tích bề mặt Mặt Trăng nhỏ hơn bề mặt châu Á.", "Các nhà khoa học tin rằng Trái Đất từng có một mặt trăng thứ hai.", "Ánh sáng mất hơn 8 phút để đi từ Mặt Trời đến Trái Đất.", "Con người nặng hơn ở cực Bắc so với ở xích đạo.",
-            "Một con gà tên Mike đã sống 18 tháng sau khi bị chặt đầu.", "Roy Sullivan bị sét đánh 7 lần và sống sót.", "Ăn quá nhiều cà rốt có thể khiến da người chuyển sang màu cam.", "Mật ong 3.000 năm tuổi trong lăng mộ Ai Cập vẫn ăn được.", "Cua dừa là loài động vật không xương sống trên cạn lớn nhất thế giới.",
-            "Nhàn Bắc Cực bay từ Bắc cực xuống Nam cực và ngược lại mỗi năm.", "Người Ai Cập cổ đại mummified có hàng ngàn con cá sấu.", "Sứa Nomura có thể to bằng một chiếc xe ô tô.", "Có những cây thông đã sống hơn 10.000 năm.", "Bà Jeanne Calment là người già nhất, sống đến 122 tuổi.",
-            "Một cuốn sách của Leonardo da Vinci được bán với giá hơn 30 triệu USD, tương đương với khoảng 790 tỷ đồng Việt ", "Núi lửa Krakatau phun trào năm 1883 tạo tiếng nổ nghe xa tới 3.000km.", "Lưỡi hươu cao cổ màu đen giúp không bị cháy nắng.", "Kiến Paraponera clavata có vết cắn đau nhất thế giới.", "Nấm là sinh vật lớn nhất hành tinh."
+            "Sứa bất tử có thể đảo ngược chu kỳ sống từ trưởng thành trở lại dạng polyp, giúp chúng gần như bất tử về mặt sinh học.", "Bọ hung có thể kéo vật nặng gấp 1.141 lần trọng lượng cơ thể.", "Một số loài rùa biển và hải sâm có khả năng hô hấp qua đường hậu môn.", "Bạch tuộc có 3 tim, 9 bộ não, máu của chúng màu xanh.", "Cú đấm của tôm tít nhanh đến mức tạo ra bọt khí đạt nhiệt độ gần bằng bề mặt Mặt Trời.", 
+            "Voi sử dụng sóng hạ âm để giao tiếp ở khoảng cách hàng km.", "Cá sấu nước mặn có lực cắn lên đến 16.460 newton.", "Chim ruồi là loài chim duy nhất có thể bay lùi.", "Mèo dành 70% cuộc đời để ngủ.", "Sao Kim quay quanh Mặt Trời nhanh hơn nó tự quay quanh trục."
         ];
 
         let factPool = [...allFacts];
@@ -158,13 +152,13 @@
 
         function init() {
             const box = document.getElementById('game-box');
+            box.innerHTML = '<div id="items-layer"></div>'; // Reset box nhưng giữ layer item
             const imgs = ['meo_den.png', 'meo_xiem.png', 'meo_vang.png', 'meo_trang.png'];
             imgs.forEach((img, tIdx) => {
                 for(let i=0; i<4; i++) {
                     const m = document.createElement('img');
                     m.src = img; m.className = 'pawn';
-                    m.dataset.team = tIdx; m.dataset.id = i; m.dataset.step = -1;
-                    m.dataset.shield = 0;
+                    m.dataset.team = tIdx; m.dataset.id = i; m.dataset.step = -1; m.dataset.shield = 0;
                     m.style.top = homePositions[tIdx].t[i] + "%"; m.style.left = homePositions[tIdx].l[i] + "%";
                     m.onclick = () => handlePawnClick(m);
                     box.appendChild(m);
@@ -176,29 +170,15 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         
-        function toggleMusic() {
-            const m = document.getElementById('bgMusic');
-            const btn = document.getElementById('music-toggle');
-            if (m.paused) { m.play(); btn.innerText = "BẬT"; btn.style.background = "#4caf50"; }
-            else { m.pause(); btn.innerText = "TẮT"; btn.style.background = "#f44336"; }
-        }
-
-        function copyLink() { navigator.clipboard.writeText(window.location.href); alert("Đã sao chép link game!"); }
-
         function roll() {
             if(currentDice > 0 || isSelectingTarget) return;
             currentDice = Math.floor(Math.random()*6)+1;
             document.getElementById('dice-res').innerText = "🎲 " + currentDice;
             document.getElementById('roll-btn').disabled = true;
-
             document.querySelectorAll(`.pawn[data-team="${turn}"]`).forEach(p => {
                 let s = parseInt(p.dataset.shield);
-                if (s > 0) {
-                    p.dataset.shield = s - 1;
-                    if (s - 1 === 0) p.classList.remove('shielded');
-                }
+                if (s > 0) { p.dataset.shield = s - 1; if (s - 1 === 0) p.classList.remove('shielded'); }
             });
-            // showFact(); // TẮT Ở ĐÂY ĐỂ ĐÚNG Ý ĐỒ ĐỒ HỌA
         }
 
         function showFact() {
@@ -230,45 +210,30 @@
             if(currentDice === 0 || parseInt(m.dataset.team) !== turn) return;
             let nextStep = parseInt(m.dataset.step) + currentDice;
 
-            // XỬ LÝ KHI VỀ ĐÍCH
+            // XỬ LÝ VỀ ĐÍCH
             if (nextStep >= paths[turn].length) {
-                resetToHome(m); // Đưa mèo về chuồng trước
-                
-                // Dùng setTimeout để Fact hiện lên mượt mà sau khi mèo về chỗ
+                resetToHome(m);
+                showFact(); // HIỆN FACT KHI VỀ ĐÍCH
                 setTimeout(() => {
-                    showFact(); 
-                    // Đợi thêm một chút để người chơi kịp nhìn Fact rồi mới hiện Alert
-                    setTimeout(() => {
-                        alert("Mèo " + teamNames[turn] + " đã hoàn thành 1 vòng xuất sắc!");
-                        endTurn();
-                    }, 500);
+                    alert("Mèo " + teamNames[turn] + " đã về đích!");
+                    endTurn();
                 }, 100);
-                
                 return; 
-            }
+            } 
 
-            // 2. DI CHUYỂN BÌNH THƯỜNG
             m.dataset.step = nextStep;
             m.style.top = paths[turn][nextStep].t + "%";
             m.style.left = paths[turn][nextStep].l + "%";
             
-            // 3. KIỂM TRA ĂN VẬT PHẨM
             let fIdx = itemsOnBoard.findIndex(it => it.team === turn && it.step === nextStep);
             if(fIdx !== -1) {
                 const type = itemsOnBoard[fIdx].type;
                 itemsOnBoard.splice(fIdx, 1); 
                 spawnItems();
                 showFact(); // HIỆN FACT KHI NHẶT ĐỒ
-                
-                if (type === 'fish') { 
-                    startKickMode(); 
-                    return; 
-                } else { 
-                    m.dataset.shield = 2; 
-                    m.classList.add('shielded'); 
-                }
+                if (type === 'fish') { startKickMode(); return; } 
+                else { m.dataset.shield = 2; m.classList.add('shielded'); }
             }
-            
             endTurn();
         }
 
@@ -277,14 +242,11 @@
             let hasTarget = false;
             targets.forEach(p => {
                 if (parseInt(p.dataset.team) !== turn && parseInt(p.dataset.step) !== -1 && parseInt(p.dataset.shield) === 0) {
-                    p.classList.add('targetable');
-                    hasTarget = true;
+                    p.classList.add('targetable'); hasTarget = true;
                 }
             });
-
             if (!hasTarget) {
-                alert("Không có đối thủ nào trên sân để đá! Bạn mất lượt đá.");
-                isSelectingTarget = false;
+                alert("Không có đối thủ để đá!");
                 endTurn(); 
             } else {
                 isSelectingTarget = true;
@@ -314,48 +276,31 @@
         }
 
         function spawnItems() {
-            itemsOnBoard = [];
             const layer = document.getElementById('items-layer');
             if (!layer) return;
-            layer.innerHTML = '';
-            let availablePositions = [];
-            paths.forEach((path, teamIdx) => {
-                path.forEach((pos, stepIdx) => {
-                    if (stepIdx > 1 && stepIdx < path.length - 1) {
-                        const isOccupied = document.querySelector(`.pawn[data-team="${teamIdx}"][data-step="${stepIdx}"]`);
-                        if (!isOccupied) availablePositions.push({ team: teamIdx, step: stepIdx, pos: pos });
-                    }
-                });
-            });
-            availablePositions.sort(() => Math.random() - 0.5);
-            const types = ['fish', 'fish', 'fish', 'fish', 'cheese', 'cheese', 'cheese', 'cheese'];
-            for (let i = 0; i < types.length; i++) {
-                if (availablePositions[i]) {
-                    const data = availablePositions[i];
-                    const type = types[i];
-                    const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png';
-                    const itemEl = document.createElement('div');
-                    itemEl.className = 'item ' + type;
-                    itemEl.style.backgroundImage = `url(${imgUrl})`;
-                    itemEl.style.top = data.pos.t + "%";
-                    itemEl.style.left = data.pos.l + "%";
-                    itemEl.style.zIndex = "150";
-                    layer.appendChild(itemEl);
-                    itemsOnBoard.push({ team: data.team, step: data.step, type: type, el: itemEl });
+            layer.innerHTML = ''; itemsOnBoard = [];
+            let available = [];
+            paths.forEach((path, t) => path.forEach((pos, s) => {
+                if (s > 1 && s < path.length - 1) available.push({t, s, pos});
+            }));
+            available.sort(() => Math.random() - 0.5);
+            ['fish','fish','cheese','cheese'].forEach((type, i) => {
+                if (available[i]) {
+                    const item = document.createElement('div');
+                    item.className = 'item ' + type;
+                    item.style.backgroundImage = `url(${type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png'})`;
+                    item.style.top = available[i].pos.t + "%"; item.style.left = available[i].pos.l + "%";
+                    layer.appendChild(item);
+                    itemsOnBoard.push({ team: available[i].t, step: available[i].s, type });
                 }
-            }
+            });
         }
 
         function updatePawnStatus() {
             document.querySelectorAll('.pawn').forEach(p => {
-                const isCurrentTurn = parseInt(p.dataset.team) === turn;
-                p.style.opacity = isCurrentTurn ? "1" : "0.5";
-                p.classList.toggle('active', isCurrentTurn);
-                if (parseInt(p.dataset.team) === 0 && isCurrentTurn) {
-                    p.style.filter = "drop-shadow(0 0 12px #000000) brightness(1.2)";
-                } else if (isCurrentTurn) {
-                    p.style.filter = "drop-shadow(0 0 8px var(--dp))";
-                } else { p.style.filter = "none"; }
+                const isCurrent = parseInt(p.dataset.team) === turn;
+                p.style.opacity = isCurrent ? "1" : "0.5";
+                p.classList.toggle('active', isCurrent);
             });
         }
     </script>
