@@ -35,40 +35,15 @@
         .item { width: 25px; height: 25px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
         @keyframes itemPop { from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } }
 
-     /* 1. Thiết lập cho mèo Xiêm: Chỉ ép tỉ lệ, không ép vị trí */
+   /* Chỉnh riêng cho Meco (Mèo Xiêm) để luôn mảnh mai */
 img.pawn[src*="meo_xiem.png"] {
     transform: translate(-50%, -50%) scaleX(0.8);
 }
 
-/* 2. Khi lướt đi: Phải giữ được dáng gầy 0.8 */
-img.pawn[src*="meo_xiem.png"]:not(.active):not(.targetable) {
-    transition: top 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28), 
-                left 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-/* 3. Khi tới lượt: Rung và Sáng (Không dùng !important để tránh kẹt) */
+/* Các hiệu ứng Rung và Sáng vẫn giữ nguyên như bản Perfect vừa rồi nhé */
 img.pawn[src*="meo_xiem.png"].active {
     animation: shakeXiem 0.6s infinite ease-in-out;
     filter: drop-shadow(0 0 10px var(--dp));
-    z-index: 200;
-}
-
-/* 4. Định nghĩa lại các chuyển động riêng cho mèo Xiêm */
-@keyframes shakeXiem {
-    0%, 100% { transform: translate(-50%, -50%) scaleX(0.8) rotate(0deg); }
-    25% { transform: translate(-50%, -50%) scaleX(0.8) rotate(5deg); }
-    75% { transform: translate(-50%, -50%) scaleX(0.8) rotate(-5deg); }
-}
-
-@keyframes pulseXiem {
-    0%, 100% { transform: translate(-50%, -50%) scaleX(0.8) scale(1); }
-    50% { transform: translate(-50%, -50%) scaleX(0.8) scale(1.2); }
-}
-
-/* Hiệu ứng khi bị nhắm đá */
-img.pawn[src*="meo_xiem.png"].targetable {
-    animation: pulseXiem 0.5s infinite ease-in-out;
-    filter: drop-shadow(0 0 15px red);
 }
         #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
     </style> 
@@ -109,6 +84,26 @@ img.pawn[src*="meo_xiem.png"].targetable {
             <div class="help-item">
                 <div style="width: 40px; height: 40px; background: url('image_492b6a.png') no-repeat center; background-size: contain;"></div>
                 <div><strong>Phô mai:</strong> Tạo giáp bảo vệ mèo khỏi bị đá trong 2 lượt đổ xúc xắc tiếp theo.</div>
+                <h3 style="color: var(--dp); margin-top: 20px; text-align: center; border-top: 1px solid #eee; pt: 15px;">
+    🐾 GẶP GỠ CÁC BÉ MÈO
+</h3>
+<div style="display: flex; justify-content: space-around; background: #f9f9f9; padding: 15px; border-radius: 12px; margin-top: 10px;">
+    <div style="text-align: center;">
+        <img src="meo_den.png" style="width: 32px;"><br>
+        <span style="font-size: 14px; font-weight: bold;">Luca</span>
+    </div>
+    <div style="text-align: center;">
+        <img src="meo_xiem.png" style="width: 26px;"><br> <span style="font-size: 14px; font-weight: bold;">Meco</span>
+    </div>
+    <div style="text-align: center;">
+        <img src="meo_vang.png" style="width: 32px;"><br>
+        <span style="font-size: 14px; font-weight: bold;">Nero</span>
+    </div>
+    <div style="text-align: center;">
+        <img src="meo_trang.png" style="width: 32px;"><br>
+        <span style="font-size: 14px; font-weight: bold;">Gumo</span>
+    </div>
+</div>
             </div>
             <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 10px;">ĐÃ HIỂU</button>
         </div>
@@ -182,7 +177,7 @@ img.pawn[src*="meo_xiem.png"].targetable {
 
         let factPool = [...allFacts];
         let currentDice = 0, turn = 0, itemsOnBoard = [], isSelectingTarget = false;
-        const teamNames = ["Mèo Đen", "Mèo Xiêm", "Mèo Vàng", "Mèo Trắng"];
+        const teamNames = ["Luca", "Meco", "Nero", "Gumo"];
 
         function init() {
             const box = document.getElementById('game-box');
