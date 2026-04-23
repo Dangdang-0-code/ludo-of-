@@ -230,14 +230,22 @@
             if(currentDice === 0 || parseInt(m.dataset.team) !== turn) return;
             let nextStep = parseInt(m.dataset.step) + currentDice;
 
-            // 1. KIỂM TRA VỀ ĐÍCH
+            // XỬ LÝ KHI VỀ ĐÍCH
             if (nextStep >= paths[turn].length) {
-                resetToHome(m);
-                showFact(); // HIỆN FACT KHI VỀ ĐÍCH
-                alert("Mèo " + teamNames[turn] + " đã hoàn thành 1 vòng!");
-                endTurn();
+                resetToHome(m); // Đưa mèo về chuồng trước
+                
+                // Dùng setTimeout để Fact hiện lên mượt mà sau khi mèo về chỗ
+                setTimeout(() => {
+                    showFact(); 
+                    // Đợi thêm một chút để người chơi kịp nhìn Fact rồi mới hiện Alert
+                    setTimeout(() => {
+                        alert("Mèo " + teamNames[turn] + " đã hoàn thành 1 vòng xuất sắc!");
+                        endTurn();
+                    }, 500);
+                }, 100);
+                
                 return; 
-            } 
+            }
 
             // 2. DI CHUYỂN BÌNH THƯỜNG
             m.dataset.step = nextStep;
