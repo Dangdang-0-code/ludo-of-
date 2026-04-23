@@ -64,25 +64,33 @@
             <button id="roll-btn" style="padding: 10px 30px; background: var(--dp); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold;" onclick="roll()">ĐỔ XÚC XẮC</button>
         </div>
     </div>
-
-    <div id="help-modal" class="modal" onclick="closeModal('help-modal')">
-        <div class="card" onclick="event.stopPropagation()">
-            <h2 style="color: var(--dp); margin-top:0;">📜 LUẬT CHƠI</h2>
-            <div class="help-item">
-                <div style="width: 40px; text-align: center; font-size: 30px;">🔄</div>
-                <div><strong>Vòng lặp:</strong> Khi mèo về đích, mèo sẽ quay lại chuồng và bắt đầu vòng đua mới.</div>
-            </div>
-            <div class="help-item">
-                <div style="width: 40px; height: 40px; background: url('image_492b85.png') no-repeat center; background-size: contain;"></div>
-                <div><strong>Cá:</strong> Chọn 1 mèo đối thủ để đá văng về chuồng.</div>
-            </div>
-            <div class="help-item">
-                <div style="width: 40px; height: 40px; background: url('image_492b6a.png') no-repeat center; background-size: contain;"></div>
-                <div><strong>Phô mai:</strong> Giáp bảo vệ mèo khỏi bị đá trong 2 lượt.</div>
-            </div>
-            <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 10px;">ĐÃ HIỂU</button>
+<div id="help-modal" class="modal" onclick="closeModal('help-modal')">
+    <div class="card" onclick="event.stopPropagation()">
+        <h2 style="color: var(--dp); margin-top:0;">📜 LUẬT CHƠI</h2>
+        
+        <div class="help-item">
+            <div style="width: 40px; text-align: center; font-size: 30px;">💡</div>
+            <div><strong>Kiến thức:</strong> Mỗi khi <b>nhặt Item</b> hoặc <b>về đích</b>, bạn sẽ nhận được 1 sự thật thú vị để tiếp tục lượt chơi!</div>
         </div>
+
+        <div class="help-item">
+            <div style="width: 40px; text-align: center; font-size: 30px;">🔄</div>
+            <div><strong>Vòng lặp:</strong> Khi mèo về đích, mèo sẽ nhận quà và quay lại chuồng để bắt đầu vòng đua mới.</div>
+        </div>
+        
+        <div class="help-item">
+            <div style="width: 40px; height: 40px; background: url('image_492b85.png') no-repeat center; background-size: contain;"></div>
+            <div><strong>Cá:</strong> Giúp bạn chọn 1 mèo đối thủ để "đá" về chuồng ngay lập tức.</div>
+        </div>
+        
+        <div class="help-item">
+            <div style="width: 40px; height: 40px; background: url('image_492b6a.png') no-repeat center; background-size: contain;"></div>
+            <div><strong>Phô mai:</strong> Tạo giáp bảo vệ mèo khỏi bị đá trong 2 lượt tiếp theo.</div>
+        </div>
+
+        <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 10px;">ĐÃ HIỂU</button>
     </div>
+</div>
     
     <div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
         <div class="card" onclick="event.stopPropagation()">
