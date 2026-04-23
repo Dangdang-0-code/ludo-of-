@@ -7,108 +7,69 @@
         :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; --gold: #ffd700; }
         body { margin: 0; background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
         #loading-screen { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
-        .progress-bar { width: 250px; height: 12px; background: #eee; border-radius: 10px; margin-top: 25px; overflow: hidden; border: 2px solid #f0f0f0; }
+        .progress-bar { width: 250px; height: 12px; background: #eee; border-radius: 10px; margin-top: 25px; overflow: hidden; }
         #fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--p), var(--dp)); transition: width 2s linear; }
-        #btn-start { display: none; margin-top: 25px; padding: 12px 45px; border-radius: 30px; background: var(--dp); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(146, 146, 255, 0.4); }
+        #btn-start { display: none; margin-top: 25px; padding: 12px 45px; border-radius: 30px; background: var(--dp); color: white; border: none; cursor: pointer; font-weight: bold; }
         #game-content { display: none; flex-direction: column; align-items: center; opacity: 0; transition: 0.8s; }
         #game-box { position: relative; width: 78vh; height: 78vh; background: white url('board.png') no-repeat center; background-size: 100% 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .pawn { width: 42px; height: 42px; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
-        img.pawn[src*="meo_xiem.png"] { transform: translate(-50%, -50%) scaleX(0.8); }
+        .pawn { width: 42px; height: 42px; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.4s ease-out; }
         .pawn.active { filter: drop-shadow(0 0 8px var(--dp)); animation: shake 0.6s infinite; }
-        .pawn.targetable { filter: drop-shadow(0 0 15px red); animation: pulseRed 0.5s infinite; z-index: 200; }
+        .pawn.targetable { filter: drop-shadow(0 0 15px red); animation: pulseRed 0.5s infinite; z-index: 200; border: 3px solid red; border-radius: 50%; }
         .pawn.shielded { filter: drop-shadow(0 0 12px var(--gold)); border: 3px solid var(--gold); border-radius: 50%; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.96); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        .card { background: white; width: 380px; padding: 35px; border-radius: 30px; border: 5px solid var(--p); text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.1); position: relative; }
-        .corner-btn { position: fixed; top: 20px; width: 45px; height: 45px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 6000; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .card { background: white; width: 380px; padding: 35px; border-radius: 30px; border: 5px solid var(--p); text-align: center; }
+        .corner-btn { position: fixed; top: 20px; width: 45px; height: 45px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; z-index: 6000; }
         #help-btn { right: 20px; } #settings-btn { left: 20px; }
-        .help-item { display: flex; align-items: center; gap: 15px; text-align: left; margin: 15px 0; }
-        @keyframes pulseRed { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.25); } }
+        .help-item { display: flex; align-items: center; gap: 15px; text-align: left; margin: 10px 0; }
+        @keyframes pulseRed { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.2); } }
         @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 25% { transform: translate(-50%, -50%) rotate(5deg); } 75% { transform: translate(-50%, -50%) rotate(-5deg); } }
-        .item { width: 25px; height: 25px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
-        @keyframes itemPop { from { transform: translate(-50%, -50%) scale(0.9); } to { transform: translate(-50%, -50%) scale(1.1); } }
+        .item { width: 30px; height: 30px; position: absolute; z-index: 50; transform: translate(-50%, -50%); background-size: contain; background-repeat: no-repeat; }
         #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
     </style> 
 </head>
 <body>
 
     <div id="loading-screen">
-        <div style="font-size: 50px; margin-bottom: 10px;">🐱</div>
-        <h2 style="color: var(--dp); letter-spacing: 3px; margin: 0;">Ludo Of Facts</h2>
+        <h2 style="color: var(--dp);">Ludo Of Facts</h2>
         <div class="progress-bar"><div id="fill"></div></div>
         <button id="btn-start" onclick="enterGame()">BẮT ĐẦU CHƠI</button>
     </div>
 
-    <button id="settings-btn" class="corner-btn" onclick="openModal('settings-modal')">⚙️</button>
     <button id="help-btn" class="corner-btn" onclick="openModal('help-modal')">?</button>
 
     <div id="game-content">
-        <div id="turn-info" style="font-size: 22px; font-weight: bold; color: var(--dp); background: white; padding: 8px 35px; border-radius: 50px; margin-bottom: 10px;">Lượt: <span id="turn-display">Luca</span></div>
+        <div id="turn-info" style="font-size: 20px; font-weight: bold; color: var(--dp); margin-bottom: 10px;">
+            Lượt: <span id="turn-display">Luca</span>
+        </div>
         <div id="game-box"><div id="items-layer"></div></div>
-        <div style="display: flex; align-items: center; gap: 25px; margin-top: 15px; background: white; padding: 10px 40px; border-radius: 50px;">
-            <div id="dice-res" style="font-size: 32px;">🎲 0</div>
-            <button id="roll-btn" style="padding: 10px 30px; background: var(--dp); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold;" onclick="roll()">ĐỔ XÚC XẮC</button>
+        <div style="margin-top: 15px; background: white; padding: 15px 40px; border-radius: 50px; display: flex; gap: 20px; align-items: center;">
+            <div id="dice-res" style="font-size: 28px; font-weight: bold;">🎲 0</div>
+            <button id="roll-btn" onclick="roll()" style="padding: 10px 25px; background: var(--dp); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold;">ĐỔ XÚC XẮC</button>
         </div>
     </div>
 
     <div id="help-modal" class="modal" onclick="closeModal('help-modal')">
         <div class="card" onclick="event.stopPropagation()">
-            <h2 style="color: var(--dp); margin-top:0;">📜 LUẬT CHƠI</h2>
-            <div class="help-item">
-                <div style="font-size: 30px;">💡</div>
-                <div><strong>Kiến thức:</strong> Mỗi khi <b>nhặt Item</b> hoặc <b>về đích</b>, bạn sẽ nhận được 1 sự thật thú vị!</div>
-            </div>
-            <div class="help-item">
-                <div style="font-size: 30px;">🔄</div>
-                <div><strong>Vòng lặp:</strong> Về đích sẽ được quay lại chuồng để bắt đầu vòng đua mới.</div>
-            </div>
-            <div class="help-item">
-                <div style="width: 35px; height: 35px; background: url('image_492b85.png') no-repeat center; background-size: contain;"></div>
-                <div><strong>Cá:</strong> Đá 1 mèo đối thủ về chuồng.</div>
-            </div>
-            <div class="help-item">
-                <div style="width: 35px; height: 35px; background: url('image_492b6a.png') no-repeat center; background-size: contain;"></div>
-                <div><strong>Phô mai:</strong> Giáp bảo vệ khỏi bị đá trong 2 lượt.</div>
-            </div>
-            <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer;">ĐÃ HIỂU</button>
-        </div>
-    </div>
-
-    <div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
-        <div class="card" onclick="event.stopPropagation()">
-            <h2 style="color: var(--dp); margin-top:0;">⚙️ CÀI ĐẶT</h2>
-            <p>SẢN PHẨM BỞI: <b>SANG - GIANG - ĐAN</b></p>
-            <button onclick="closeModal('settings-modal')" style="background: #eee; border: none; padding: 10px 30px; border-radius: 20px;">ĐÓNG</button>
+            <h2 style="color: var(--dp)">LUẬT CHƠI</h2>
+            <div class="help-item"><span>💡</span> <b>Kiến thức:</b> Xuất hiện khi nhặt item hoặc về đích.</div>
+            <div class="help-item"><span>🚀</span> <b>Về đích:</b> Quay lại chuồng và bắt đầu vòng mới.</div>
+            <div class="help-item"><img src="image_492b85.png" width="30"> <b>Cá:</b> Đá 1 đối thủ bất kỳ.</div>
+            <div class="help-item"><img src="image_492b6a.png" width="30"> <b>Phô mai:</b> Khiên bảo vệ trong 2 lượt.</div>
+            <button onclick="closeModal('help-modal')" style="margin-top: 15px; padding: 10px 25px; background: var(--dp); color: white; border: none; border-radius: 15px;">ĐÃ HIỂU</button>
         </div>
     </div>
 
     <div id="fact-modal" class="modal">
         <div class="card">
             <h3 style="color: var(--dp)">💡 BẠN CÓ BIẾT?</h3>
-            <p id="fact-txt" style="font-size: 18px; line-height: 1.6; min-height: 80px;"></p>
-            <div id="timer-display" style="font-size: 40px; font-weight: 900; color: var(--dp);">5</div>
-            <button id="ok-btn" disabled onclick="closeFact()" style="background: #bbb; border: none; padding: 12px 40px; border-radius: 20px; color: white;">HÃY ĐỌC KỸ...</button>
+            <p id="fact-txt" style="font-size: 17px; line-height: 1.5;"></p>
+            <div id="timer-display" style="font-size: 30px; font-weight: bold; color: var(--dp);">5</div>
+            <button id="ok-btn" onclick="closeFact()" style="padding: 10px 30px; border-radius: 15px; border: none; color: white; cursor: pointer;">ĐANG ĐỌC...</button>
         </div>
     </div>
 
-    <audio id="bgMusic" loop src="pixel-drift-pecan-pie-main-version-41106-02-09.mp3"></audio>
-
     <script>
-        window.onload = () => {
-            document.getElementById('fill').style.width = '100%';
-            setTimeout(() => { document.getElementById('btn-start').style.display = 'block'; }, 2000); 
-        };
-
-        function enterGame() {
-            document.getElementById('loading-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('game-content').style.display = 'flex';
-                setTimeout(() => document.getElementById('game-content').style.opacity = '1', 50);
-                init(); 
-                updatePawnStatus();
-            }, 500);
-        }
-
+        // --- DATA ---
         const paths = [
             [{t:6, l:44.5}, {t:13, l:44.5}, {t:20, l:44.5}, {t:27, l:44.5}, {t:34, l:44.5}, {t:41, l:38}, {t:41, l:31}, {t:41, l:24}, {t:41, l:17}, {t:41, l:10}],
             [{t:44.5, l:94}, {t:44.5, l:87}, {t:44.5, l:80}, {t:44.5, l:73}, {t:44.5, l:66}, {t:38, l:59}, {t:31, l:59}, {t:24, l:59}, {t:17, l:59}, {t:10, l:59}],
@@ -119,35 +80,43 @@
             {t:[17,17,28,28], l:[17,28,17,28]}, {t:[17,17,28,28], l:[72,83,72,83]}, 
             {t:[72,72,83,83], l:[17,28,17,28]}, {t:[72,72,83,83], l:[72,83,72,83]}
         ];
-        const allFacts = [
-            "Sứa bất tử có thể đảo ngược chu kỳ sống.", "Bọ hung kéo vật nặng gấp 1.141 lần cơ thể.", "Rùa biển có thể thở qua hậu môn.", "Bạch tuộc có 3 tim và 9 bộ não.", "Tôm tít đấm nhanh đến mức tạo ra nhiệt.", 
-            "Voi dùng sóng hạ âm để gọi nhau.", "Cá sấu có lực cắn mạnh nhất hành tinh.", "Chim ruồi có thể bay lùi.", "Mèo ngủ 70% cuộc đời.", "Sao Kim quay ngược so với Trái Đất."
-        ];
+        const allFacts = ["Sứa bất tử có thể đảo ngược chu kỳ sống.", "Bọ hung kéo vật nặng gấp 1.141 lần cơ thể.", "Rùa biển có thể thở qua hậu môn.", "Bạch tuộc có 3 tim và 9 bộ não.", "Tôm tít đấm nhanh đến mức tạo ra nhiệt.", "Voi dùng sóng hạ âm để gọi nhau.", "Cá sấu có lực cắn mạnh nhất hành tinh.", "Chim ruồi có thể bay lùi.", "Mèo ngủ 70% cuộc đời.", "Sao Kim quay ngược so với Trái Đất."];
 
-        let factPool = [...allFacts];
-        let currentDice = 0, turn = 0, itemsOnBoard = [], isSelectingTarget = false;
+        let turn = 0, currentDice = 0, itemsOnBoard = [], isSelectingTarget = false, factCallback = null;
         const teamNames = ["Luca", "Meco", "Nero", "Gumo"];
+
+        // --- CORE ---
+        window.onload = () => {
+            document.getElementById('fill').style.width = '100%';
+            setTimeout(() => { document.getElementById('btn-start').style.display = 'block'; }, 2000); 
+        };
+
+        function enterGame() {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('game-content').style.display = 'flex';
+            document.getElementById('game-content').style.opacity = '1';
+            init();
+        }
 
         function init() {
             const box = document.getElementById('game-box');
             box.querySelectorAll('.pawn').forEach(p => p.remove());
             const imgs = ['meo_den.png', 'meo_xiem.png', 'meo_vang.png', 'meo_trang.png'];
+            
             imgs.forEach((img, tIdx) => {
                 for(let i=0; i<4; i++) {
                     const m = document.createElement('img');
                     m.src = img; m.className = 'pawn';
                     m.dataset.team = tIdx; m.dataset.id = i; m.dataset.step = -1; m.dataset.shield = 0;
-                    m.style.top = homePositions[tIdx].t[i] + "%"; m.style.left = homePositions[tIdx].l[i] + "%";
+                    resetToHome(m, false);
                     m.onclick = () => handlePawnClick(m);
                     box.appendChild(m);
                 }
             });
             spawnItems();
+            updatePawnStatus();
         }
 
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        
         function roll() {
             if(currentDice > 0 || isSelectingTarget) return;
             currentDice = Math.floor(Math.random()*6)+1;
@@ -155,127 +124,167 @@
             document.getElementById('roll-btn').disabled = true;
         }
 
-        function showFact() {
-            if (factPool.length === 0) factPool = [...allFacts];
-            const fact = factPool.splice(Math.floor(Math.random()*factPool.length), 1)[0];
-            document.getElementById('fact-txt').innerText = fact;
-            openModal('fact-modal');
-            let s = 5;
-            document.getElementById('timer-display').innerText = s;
-            const btn = document.getElementById('ok-btn');
-            btn.disabled = true; btn.style.background = "#bbb";
-            const timer = setInterval(() => {
-                s--; document.getElementById('timer-display').innerText = s;
-                if(s <= 0) { clearInterval(timer); btn.disabled = false; btn.style.background = "#9292ff"; btn.innerText = "XÁC NHẬN!"; }
-            }, 1000);
-        }
-
-        function closeFact() { closeModal('fact-modal'); }
-
         function handlePawnClick(m) {
             if (isSelectingTarget) {
-                if (parseInt(m.dataset.team) !== turn && parseInt(m.dataset.step) !== -1 && parseInt(m.dataset.shield) === 0) kickPawn(m);
+                if (parseInt(m.dataset.team) !== turn && parseInt(m.dataset.step) !== -1 && parseInt(m.dataset.shield) === 0) {
+                    kickPawn(m);
+                }
                 return;
             }
-            if(currentDice === 0 || parseInt(m.dataset.team) !== turn) return;
+            if (currentDice === 0 || parseInt(m.dataset.team) !== turn) return;
             move(m);
         }
 
         function move(m) {
-            let nextStep = parseInt(m.dataset.step) + currentDice;
+            let step = parseInt(m.dataset.step);
+            let nextStep = step + currentDice;
             
+            // Xử lý về đích
             if (nextStep >= paths[turn].length) {
-                resetToHome(m);
-                showFact();
-                alert("Mèo về đích! Nhận 1 kiến thức để bắt đầu vòng mới.");
-                endTurn();
+                resetToHome(m, true);
+                showFact(() => { endTurn(); });
                 return; 
-            } 
+            }
 
+            // Di chuyển quân
             m.dataset.step = nextStep;
             m.style.top = paths[turn][nextStep].t + "%";
             m.style.left = paths[turn][nextStep].l + "%";
 
-            // KIỂM TRA ITEM
+            // Kiểm tra Item
             let fIdx = itemsOnBoard.findIndex(it => it.team === turn && it.step === nextStep);
             if (fIdx !== -1) {
-                const type = itemsOnBoard[fIdx].type;
+                let item = itemsOnBoard[fIdx];
                 itemsOnBoard.splice(fIdx, 1);
-                const layer = document.getElementById('items-layer');
-                if(layer.children[fIdx]) layer.removeChild(layer.children[fIdx]);
+                renderItems(); // Vẽ lại item để mất cái vừa ăn
                 
-                showFact();
-                if (type === 'fish') { startKickMode(); return; } 
-                else { m.dataset.shield = 2; m.classList.add('shielded'); endTurn(); }
+                showFact(() => {
+                    if (item.type === 'fish') {
+                        startKickMode();
+                    } else {
+                        m.dataset.shield = 2;
+                        m.classList.add('shielded');
+                        endTurn();
+                    }
+                });
             } else {
-                endTurn();
+                setTimeout(endTurn, 400);
             }
         }
 
+        // --- KICK LOGIC ---
         function startKickMode() {
             isSelectingTarget = true;
-            let hasTarget = false;
-            document.querySelectorAll('.pawn').forEach(p => {
+            let targets = document.querySelectorAll('.pawn');
+            let count = 0;
+            targets.forEach(p => {
                 if (parseInt(p.dataset.team) !== turn && parseInt(p.dataset.step) !== -1 && parseInt(p.dataset.shield) === 0) {
-                    p.classList.add('targetable'); hasTarget = true;
+                    p.classList.add('targetable');
+                    count++;
                 }
             });
-            if (!hasTarget) { alert("Không có ai để đá!"); endTurn(); }
-            else { document.getElementById('turn-display').innerText = "CHỌN MỤC TIÊU!"; }
+            if (count === 0) {
+                alert("Không có đối thủ để đá!");
+                endTurn();
+            } else {
+                document.getElementById('turn-display').innerText = "CHỌN MÈO ĐỐI THỦ!";
+            }
         }
 
         function kickPawn(m) {
-            resetToHome(m);
-            isSelectingTarget = false;
+            resetToHome(m, true);
             document.querySelectorAll('.pawn').forEach(p => p.classList.remove('targetable'));
+            isSelectingTarget = false;
             endTurn();
         }
 
-        function resetToHome(m) {
+        function resetToHome(m, animate) {
             let t = parseInt(m.dataset.team), id = parseInt(m.dataset.id);
-            m.style.top = homePositions[t].t[id] + "%"; m.style.left = homePositions[t].l[id] + "%";
-            m.dataset.step = -1; m.classList.remove('shielded'); m.dataset.shield = 0;
+            m.style.top = homePositions[t].t[id] + "%";
+            m.style.left = homePositions[t].l[id] + "%";
+            m.dataset.step = -1;
+            m.dataset.shield = 0;
+            m.classList.remove('shielded');
         }
 
         function endTurn() {
-            currentDice = 0; document.getElementById('dice-res').innerText = "🎲 0";
+            currentDice = 0;
+            document.getElementById('dice-res').innerText = "🎲 0";
             document.getElementById('roll-btn').disabled = false;
-            isSelectingTarget = false;
             turn = (turn + 1) % 4;
             document.getElementById('turn-display').innerText = teamNames[turn];
+            
+            // Giảm khiên mỗi lượt
+            document.querySelectorAll(`.pawn[data-team="${turn}"]`).forEach(p => {
+                let s = parseInt(p.dataset.shield);
+                if (s > 0) {
+                    p.dataset.shield = s - 1;
+                    if (s-1 === 0) p.classList.remove('shielded');
+                }
+            });
             updatePawnStatus();
         }
 
-        function spawnItems() {
-            const layer = document.getElementById('items-layer');
-            layer.innerHTML = ''; itemsOnBoard = [];
-            let available = [];
-            paths.forEach((path, teamIdx) => path.forEach((pos, stepIdx) => {
-                if (stepIdx > 0 && stepIdx < path.length - 1) available.push({ team: teamIdx, step: stepIdx, pos: pos });
-            }));
-            available.sort(() => Math.random() - 0.5);
-            // TĂNG LÊN 12 ITEM
-            for (let i = 0; i < 12; i++) {
-                if (available[i]) {
-                    const type = Math.random() > 0.5 ? 'fish' : 'cheese';
-                    const it = available[i];
-                    const el = document.createElement('div');
-                    el.className = 'item ' + type;
-                    el.style.backgroundImage = `url(${type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png'})`;
-                    el.style.top = it.pos.t + "%"; el.style.left = it.pos.l + "%";
-                    layer.appendChild(el);
-                    itemsOnBoard.push({ team: it.team, step: it.step, type: type });
+        // --- UI & FACT ---
+        function showFact(callback) {
+            factCallback = callback;
+            const fact = allFacts[Math.floor(Math.random()*allFacts.length)];
+            document.getElementById('fact-txt').innerText = fact;
+            openModal('fact-modal');
+            let s = 5;
+            const btn = document.getElementById('ok-btn');
+            btn.disabled = true; btn.style.background = "#bbb"; btn.innerText = "ĐANG ĐỌC...";
+            const timer = setInterval(() => {
+                s--;
+                document.getElementById('timer-display').innerText = s;
+                if(s <= 0) {
+                    clearInterval(timer);
+                    btn.disabled = false; btn.style.background = "#9292ff"; btn.innerText = "XÁC NHẬN";
                 }
+            }, 1000);
+        }
+
+        function closeFact() {
+            closeModal('fact-modal');
+            if (factCallback) factCallback();
+        }
+
+        function spawnItems() {
+            itemsOnBoard = [];
+            let pool = [];
+            paths.forEach((path, t) => path.forEach((pos, s) => {
+                if (s > 0 && s < 8) pool.push({team: t, step: s, pos: pos});
+            }));
+            pool.sort(() => Math.random() - 0.5);
+            // Spawn 15 item cho nhiều
+            for(let i=0; i<15; i++) {
+                if (pool[i]) itemsOnBoard.push({ ...pool[i], type: Math.random() > 0.5 ? 'fish' : 'cheese'});
             }
+            renderItems();
+        }
+
+        function renderItems() {
+            const layer = document.getElementById('items-layer');
+            layer.innerHTML = '';
+            itemsOnBoard.forEach(it => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.style.backgroundImage = `url(${it.type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png'})`;
+                div.style.top = it.pos.t + "%"; div.style.left = it.pos.l + "%";
+                layer.appendChild(div);
+            });
         }
 
         function updatePawnStatus() {
             document.querySelectorAll('.pawn').forEach(p => {
-                const isCurrent = parseInt(p.dataset.team) === turn;
-                p.style.opacity = isCurrent ? "1" : "0.5";
-                p.classList.toggle('active', isCurrent);
+                let isMyTurn = parseInt(p.dataset.team) === turn;
+                p.classList.toggle('active', isMyTurn);
+                p.style.opacity = isMyTurn ? "1" : "0.4";
             });
         }
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
 </html>
