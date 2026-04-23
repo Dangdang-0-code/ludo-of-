@@ -233,9 +233,10 @@
             // XỬ LÝ KHI VỀ ĐÍCH
             if (nextStep >= paths[turn].length) {
                 resetToHome(m);
-                // showFact(); // HIỆN FACT KHI VỀ CHUỒNG
+                showFact(); // <-- ĐẢM BẢO DÒNG NÀY CÓ Ở ĐÂY ĐỂ HIỆN FACT
                 alert("Mèo " + teamNames[turn] + " đã hoàn thành 1 vòng!");
             } else {
+                // ... các code di chuyển khác giữ nguyên ...
                 m.dataset.step = nextStep;
                 m.style.top = paths[turn][nextStep].t + "%";
                 m.style.left = paths[turn][nextStep].l + "%";
