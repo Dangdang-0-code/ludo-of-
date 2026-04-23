@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>Ludo Of Facts - Cờ Cá Ngựa Online</title>
     <style>
-       :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; --gold: #ffd700; }
+     :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; --gold: #ffd700; }
         body { margin: 0; background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
 
+        /* PHẦN GIAO DIỆN CHÍNH */
         #loading-screen { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
         .progress-bar { width: 250px; height: 12px; background: #eee; border-radius: 10px; margin-top: 25px; overflow: hidden; border: 2px solid #f0f0f0; }
         #fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--p), var(--dp)); transition: width 2s linear; }
@@ -15,7 +16,7 @@
         #game-content { display: none; flex-direction: column; align-items: center; opacity: 0; transition: 0.8s; }
         #game-box { position: relative; width: 78vh; height: 78vh; background: white url('board.png') no-repeat center; background-size: 100% 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
 
-        /* SỬA LỖI MÈO VÀ LỆCH Ô */
+        /* SỬA LỖI MÈO XIÊM VÀ LỆCH Ô */
         .pawn { 
             width: 42px !important; height: 42px !important; position: absolute !important; z-index: 100; cursor: pointer;
             transform-origin: center center !important;
@@ -23,6 +24,7 @@
             transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); 
         }
         img.pawn[src*="meo_xiem.png"] { --s: 0.8 !important; }
+        
         .pawn.active { filter: drop-shadow(0 0 8px var(--dp)) !important; animation: shake 0.6s infinite !important; }
         .pawn.targetable { filter: drop-shadow(0 0 15px red) !important; z-index: 200 !important; animation: pulseRed 0.5s infinite alternate !important; }
         .pawn.shielded { filter: drop-shadow(0 0 12px var(--gold)) !important; outline: 3px solid var(--gold) !important; border-radius: 50% !important; }
@@ -37,8 +39,8 @@
             to { transform: translate(-50%, -50%) scale(calc(var(--s, 1) * 1.25)); } 
         }
 
-        /* KHÔI PHỤC GIAO DIỆN MODAL (LUẬT CHƠI & CÀI ĐẶT) */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.96); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        /* PHỤC HỒI MODAL LUẬT CHƠI & CÀI ĐẶT */
+        .modal { display: none !important; position: fixed !important; inset: 0 !important; background: rgba(255,255,255,0.96) !important; z-index: 5000 !important; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .card { background: white; width: 380px; padding: 35px; border-radius: 30px; border: 5px solid var(--p); text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.1); position: relative; }
         .corner-btn { position: fixed; top: 20px; width: 45px; height: 45px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 6000; }
         #help-btn { right: 20px; }
@@ -46,6 +48,7 @@
         .help-item { display: flex; align-items: center; gap: 15px; text-align: left; margin: 15px 0; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; padding: 10px; background: #f8f9fa; border-radius: 15px; }
 
+        /* ITEM TRÊN BÀN CỜ */
         .item { width: 25px; height: 25px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
         @keyframes itemPop { from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } }
         #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
