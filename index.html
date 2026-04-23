@@ -228,7 +228,7 @@
                     if (s - 1 === 0) p.classList.remove('shielded');
                 }
             });
-            showFact();
+            // showFact();
         }
 
         function showFact() {
@@ -264,7 +264,9 @@
 
             if (nextStep >= paths[turn].length) {
                 resetToHome(m);
-                alert("Mèo " + teamNames[turn] + " đã hoàn thành 1 vòng và quay lại xuất phát!");
+                showFact(); // Thêm dòng này để thưởng Fact khi về đích
+                alert("Mèo " + teamNames[turn] + " đã hoàn thành 1 vòng!");
+            }
             } else {
                 m.dataset.step = nextStep;
                 m.style.top = paths[turn][nextStep].t + "%";
@@ -273,7 +275,13 @@
                 let fIdx = itemsOnBoard.findIndex(it => it.team === turn && it.step === nextStep);
                 if(fIdx !== -1) {
                     const type = itemsOnBoard[fIdx].type;
-                    itemsOnBoard.splice(fIdx, 1); spawnItems();
+                    itemsOnBoard.splice(fIdx, 1); spawnItems(); if(fIdx !== -1) {
+    const type = itemsOnBoard[fIdx].type;
+    itemsOnBoard.splice(fIdx, 1); 
+    spawnItems();
+    // showFact(); // <-- Thêm vào đây để nhặt đồ là hiện Fact ngay
+    // ... các code còn lại giữ nguyên
+}
                     if (type === 'fish') { startKickMode(); return; }
                     else { m.dataset.shield = 2; m.classList.add('shielded'); }
                 }
