@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Ludo Of Facts - Cờ Cá Ngựa Online</title>
     <style>
-        :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; --gold: #ffd700; }
+       :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; --gold: #ffd700; }
         body { margin: 0; background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
 
         #loading-screen { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
@@ -14,8 +14,9 @@
 
         #game-content { display: none; flex-direction: column; align-items: center; opacity: 0; transition: 0.8s; }
         #game-box { position: relative; width: 78vh; height: 78vh; background: white url('board.png') no-repeat center; background-size: 100% 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .pawn { width: 42px; height: 42px; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
-.pawn { 
+
+        /* SỬA LỖI MÈO VÀ LỆCH Ô */
+        .pawn { 
             width: 42px !important; height: 42px !important; position: absolute !important; z-index: 100; cursor: pointer;
             transform-origin: center center !important;
             transform: translate(-50%, -50%) scale(var(--s, 1)) !important; 
@@ -36,34 +37,19 @@
             to { transform: translate(-50%, -50%) scale(calc(var(--s, 1) * 1.25)); } 
         }
 
+        /* KHÔI PHỤC GIAO DIỆN MODAL (LUẬT CHƠI & CÀI ĐẶT) */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.96); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .card { background: white; width: 380px; padding: 35px; border-radius: 30px; border: 5px solid var(--p); text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.1); position: relative; }
+        .corner-btn { position: fixed; top: 20px; width: 45px; height: 45px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 6000; }
+        #help-btn { right: 20px; }
+        #settings-btn { left: 20px; }
+        .help-item { display: flex; align-items: center; gap: 15px; text-align: left; margin: 15px 0; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; padding: 10px; background: #f8f9fa; border-radius: 15px; }
+
         .item { width: 25px; height: 25px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
         @keyframes itemPop { from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } }
         #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
-    </style> 
-</head>
-<body>
-
-    <div id="loading-screen">
-        <div style="font-size: 50px; margin-bottom: 10px;">🐱</div>
-        <h2 style="color: var(--dp); letter-spacing: 3px; margin: 0;">Ludo Of Facts</h2>
-        <p style="color: #888; margin-top: 5px;">Cờ Cá Ngựa Online</p>
-        <div class="progress-bar"><div id="fill"></div></div>
-        <button id="btn-start" onclick="enterGame()">BẮT ĐẦU CHƠI</button>
-    </div>
-
-    <button id="settings-btn" class="corner-btn" onclick="openModal('settings-modal')">⚙️</button>
-    <button id="help-btn" class="corner-btn" onclick="openModal('help-modal')">?</button>
-
-    <div id="game-content">
-        <div id="turn-info" style="font-size: 22px; font-weight: bold; color: var(--dp); background: white; padding: 8px 35px; border-radius: 50px; margin-bottom: 10px;">Lượt: <span id="turn-display">Luca</span></div>
-        <div id="game-box"><div id="items-layer"></div></div>
-        <div style="display: flex; align-items: center; gap: 25px; margin-top: 15px; background: white; padding: 10px 40px; border-radius: 50px;">
-            <div id="dice-res" style="font-size: 32px;">🎲 0</div>
-            <button id="roll-btn" style="padding: 10px 30px; background: var(--dp); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold;" onclick="roll()">ĐỔ XÚC XẮC</button>
-        </div>
-    </div>
-
-    <div id="help-modal" class="modal" onclick="closeModal('help-modal')">
+        <div id="help-modal" class="modal" onclick="closeModal('help-modal')">
         <div class="card" onclick="event.stopPropagation()">
             <h2 style="color: var(--dp); margin-top:0;">📜 LUẬT CHƠI</h2>
             <div class="help-item">
