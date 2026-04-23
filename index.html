@@ -34,7 +34,17 @@
         .help-item { display: flex; align-items: center; gap: 15px; text-align: left; margin: 15px 0; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; padding: 10px; background: #f8f9fa; border-radius: 15px; }
         
-        @keyframes pulseRed { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.25); } }
+        /* 1. Sửa hiệu ứng Pulse để nó nhân tỉ lệ hiện tại lên */
+@keyframes pulseRed { 
+    from { transform: translate(-50%, -50%) scale(var(--s, 1)); } 
+    to { transform: translate(-50%, -50%) scale(calc(var(--s, 1) * 1.25)); } 
+}
+
+/* 2. Ép Mèo Xiêm luôn giữ tỉ lệ 0.8 kể cả khi bình thường hay bị đá */
+img.pawn[src*="meo_xiem.png"] { 
+    --s: 0.8; 
+    transform: translate(-50%, -50%) scale(var(--s)); 
+}
         @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 25% { transform: translate(-50%, -50%) rotate(5deg); } 75% { transform: translate(-50%, -50%) rotate(-5deg); } }
         @keyframes shakeXiem { 0%, 100% { transform: translate(-50%, -50%) scaleX(0.8) rotate(0); } 25% { transform: translate(-50%, -50%) scaleX(0.8) rotate(5deg); } 75% { transform: translate(-50%, -50%) scaleX(0.8) rotate(-5deg); } }
         
