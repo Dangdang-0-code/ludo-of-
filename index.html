@@ -7,12 +7,10 @@
         :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; --gold: #ffd700; }
         body { margin: 0; background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
 
-        /* --- PHẦN LOADING MỚI THÊM --- */
         #loading-screen { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
         .progress-bar { width: 250px; height: 12px; background: #eee; border-radius: 10px; margin-top: 25px; overflow: hidden; border: 2px solid #f0f0f0; }
         #fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--p), var(--dp)); transition: width 2s linear; }
         #btn-start { display: none; margin-top: 25px; padding: 12px 45px; border-radius: 30px; background: var(--dp); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(146, 146, 255, 0.4); }
-        /* ----------------------------- */
 
         #game-content { display: none; flex-direction: column; align-items: center; opacity: 0; transition: 0.8s; }
         #game-box { position: relative; width: 78vh; height: 78vh; background: white url('board.png') no-repeat center; background-size: 100% 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
@@ -33,33 +31,12 @@
         
         @keyframes pulseRed { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.25); } }
         @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 25% { transform: translate(-50%, -50%) rotate(5deg); } 75% { transform: translate(-50%, -50%) rotate(-5deg); } }
-        .item { 
-    width: 25px;   /* Giảm từ 35px xuống 25px */
-    height: 25px;  /* Giảm từ 35px xuống 25px */
-    position: absolute; 
-    z-index: 50; 
-    transform: translate(-50%, -50%) rotate(20deg); 
-    background-size: contain; 
-    background-repeat: no-repeat; 
-    animation: itemPop 0.8s infinite alternate; 
-}
-       @keyframes itemPop { 
-    from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } 
-    to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } 
-}
-  /* Chỉnh cho mèo Xiêm gọn lại */
-        img[src*="meo_xiem.png"] {
-            transform: scaleX(0.8);
-        }
-
-        /* ĐÂY LÀ ĐOẠN QUAN TRỌNG ĐỂ HIỆN PHÔ MAI */
-        #items-layer {
-            position: absolute;
-            inset: 0;
-            z-index: 60;
-            pointer-events: none;
-        }
         
+        .item { width: 25px; height: 25px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
+        @keyframes itemPop { from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } }
+
+        img[src*="meo_xiem.png"] { transform: scaleX(0.8); }
+        #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
     </style> 
 </head>
 <body>
@@ -135,12 +112,9 @@
     <audio id="bgMusic" loop src="pixel-drift-pecan-pie-main-version-41106-02-09.mp3"></audio>
 
     <script>
-        // LOGIC LOADING KHI MỞ TRANG
         window.onload = () => {
             document.getElementById('fill').style.width = '100%';
-            setTimeout(() => {
-                document.getElementById('btn-start').style.display = 'block';
-            }, 2000); 
+            setTimeout(() => { document.getElementById('btn-start').style.display = 'block'; }, 2000); 
         };
 
         function enterGame() {
@@ -161,11 +135,9 @@
             [{t:94, l:55.5}, {t:87, l:55.5}, {t:80, l:55.5}, {t:73, l:55.5}, {t:66, l:55.5}, {t:59, l:62}, {t:59, l:69}, {t:59, l:76}, {t:59, l:83}, {t:59, l:90}]
         ];
         const homePositions = [
-    {t:[17,17,28,28], l:[17,28,17,28]}, // Đội 0: Mèo Đen (Vẫn ở trên bên trái)
-    {t:[17,17,28,28], l:[72,83,72,83]}, // Đội 1: Mèo Xiêm (Bây giờ ở trên bên phải)
-    {t:[72,72,83,83], l:[17,28,17,28]}, // Đội 2: Mèo Vàng (Vẫn ở dưới bên trái)
-    {t:[72,72,83,83], l:[72,83,72,83]}  // Đội 3: Mèo Trắng (Bây giờ ở dưới bên phải)
-];
+            {t:[17,17,28,28], l:[17,28,17,28]}, {t:[17,17,28,28], l:[72,83,72,83]}, 
+            {t:[72,72,83,83], l:[17,28,17,28]}, {t:[72,72,83,83], l:[72,83,72,83]}
+        ];
         
         const allFacts = [
             "Sứa bất tử có thể đảo ngược chu kỳ sống từ trưởng thành trở lại dạng polyp, giúp chúng gần như bất tử về mặt sinh học.", "Bọ hung có thể kéo vật nặng gấp 1.141 lần trọng lượng cơ thể.", "Một số loài rùa biển và hải sâm có khả năng hô hấp qua đường hậu môn.", "Bạch tuộc có 3 tim, 9 bộ não, máu của chúng màu xanh và 2 tim bơm máu lên mang, 1 tim bơm máu đi khắp cơ thể.", "Cú đấm của tôm tít nhanh đến mức tạo ra bọt khí đạt nhiệt độ gần bằng bề mặt Mặt Trời.", 
@@ -183,6 +155,7 @@
         let factPool = [...allFacts];
         let currentDice = 0, turn = 0, itemsOnBoard = [], isSelectingTarget = false;
         const teamNames = ["Mèo Đen", "Mèo Xiêm", "Mèo Vàng", "Mèo Trắng"];
+
         function init() {
             const box = document.getElementById('game-box');
             const imgs = ['meo_den.png', 'meo_xiem.png', 'meo_vang.png', 'meo_trang.png'];
@@ -210,10 +183,7 @@
             else { m.pause(); btn.innerText = "TẮT"; btn.style.background = "#f44336"; }
         }
 
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href);
-            alert("Đã sao chép link game! Hãy gửi cho bạn bè nhé.");
-        }
+        function copyLink() { navigator.clipboard.writeText(window.location.href); alert("Đã sao chép link game!"); }
 
         function roll() {
             if(currentDice > 0 || isSelectingTarget) return;
@@ -228,7 +198,7 @@
                     if (s - 1 === 0) p.classList.remove('shielded');
                 }
             });
-            // showFact();
+            // showFact(); // ĐÃ TẮT FACT KHI ĐỔ XÚC XẮC
         }
 
         function showFact() {
@@ -236,7 +206,7 @@
             const fact = factPool.splice(Math.floor(Math.random()*factPool.length), 1)[0];
             document.getElementById('fact-txt').innerText = fact;
             openModal('fact-modal');
-            let s = 5; // Đã đổi thành 5 giây
+            let s = 5;
             document.getElementById('timer-display').innerText = s;
             const btn = document.getElementById('ok-btn');
             btn.disabled = true; btn.style.background = "#bbb"; btn.innerText = "HÃY ĐỌC KỸ...";
@@ -250,9 +220,7 @@
 
         function handlePawnClick(m) {
             if (isSelectingTarget) {
-                if (parseInt(m.dataset.team) !== turn && parseInt(m.dataset.step) !== -1 && parseInt(m.dataset.shield) === 0) {
-                    kickPawn(m);
-                }
+                if (parseInt(m.dataset.team) !== turn && parseInt(m.dataset.step) !== -1 && parseInt(m.dataset.shield) === 0) kickPawn(m);
                 return;
             }
             move(m);
@@ -262,26 +230,24 @@
             if(currentDice === 0 || parseInt(m.dataset.team) !== turn) return;
             let nextStep = parseInt(m.dataset.step) + currentDice;
 
+            // XỬ LÝ KHI VỀ ĐÍCH
             if (nextStep >= paths[turn].length) {
                 resetToHome(m);
-                showFact(); // Thêm dòng này để thưởng Fact khi về đích
+                showFact(); // HIỆN FACT KHI VỀ CHUỒNG
                 alert("Mèo " + teamNames[turn] + " đã hoàn thành 1 vòng!");
-            }
             } else {
                 m.dataset.step = nextStep;
                 m.style.top = paths[turn][nextStep].t + "%";
                 m.style.left = paths[turn][nextStep].l + "%";
                 
+                // XỬ LÝ KHI ĂN VẬT PHẨM
                 let fIdx = itemsOnBoard.findIndex(it => it.team === turn && it.step === nextStep);
                 if(fIdx !== -1) {
                     const type = itemsOnBoard[fIdx].type;
-                    itemsOnBoard.splice(fIdx, 1); spawnItems(); if(fIdx !== -1) {
-    const type = itemsOnBoard[fIdx].type;
-    itemsOnBoard.splice(fIdx, 1); 
-    spawnItems();
-    // showFact(); // <-- Thêm vào đây để nhặt đồ là hiện Fact ngay
-    // ... các code còn lại giữ nguyên
-}
+                    itemsOnBoard.splice(fIdx, 1); 
+                    spawnItems();
+                    showFact(); // HIỆN FACT KHI ĂN ĐỒ
+                    
                     if (type === 'fish') { startKickMode(); return; }
                     else { m.dataset.shield = 2; m.classList.add('shielded'); }
                 }
@@ -316,52 +282,41 @@
             turn = (turn + 1) % 4;
             document.getElementById('turn-display').innerText = teamNames[turn] + " (P" + (turn+1) + ")";
             updatePawnStatus();
-       } // Đây là dấu đóng của hàm phía trên, hãy đảm bảo nó tồn tại
+        }
 
         function spawnItems() {
             itemsOnBoard = [];
             const layer = document.getElementById('items-layer');
             if (!layer) return;
             layer.innerHTML = '';
-            
             let availablePositions = [];
-            // Lấy tất cả các ô trên đường đi của 4 đội
             paths.forEach((path, teamIdx) => {
                 path.forEach((pos, stepIdx) => {
-                    // Không đặt ở ô xuất phát (0) và ô cuối cùng
                     if (stepIdx > 1 && stepIdx < path.length - 1) {
-                        // Kiểm tra xem có quân cờ nào đang đứng ở đây không
                         const isOccupied = document.querySelector(`.pawn[data-team="${teamIdx}"][data-step="${stepIdx}"]`);
-                        if (!isOccupied) {
-                            availablePositions.push({ team: teamIdx, step: stepIdx, pos: pos });
-                        }
+                        if (!isOccupied) availablePositions.push({ team: teamIdx, step: stepIdx, pos: pos });
                     }
                 });
             });
-
-            // Trộn ngẫu nhiên vị trí
             availablePositions.sort(() => Math.random() - 0.5);
-
-            // Đảm bảo 4 Cá - 4 Phô mai
             const types = ['fish', 'fish', 'fish', 'fish', 'cheese', 'cheese', 'cheese', 'cheese'];
-            
             for (let i = 0; i < types.length; i++) {
                 if (availablePositions[i]) {
                     const data = availablePositions[i];
                     const type = types[i];
-                   const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png';
-                   const itemEl = document.createElement('div');
-itemEl.className = 'item ' + type;
-itemEl.style.backgroundImage = `url(${imgUrl})`; // Bỏ dấu nháy đơn bên trong
-itemEl.style.top = data.pos.t + "%";
-itemEl.style.left = data.pos.l + "%";
-itemEl.style.zIndex = "150"; // Thêm dòng này để nó nổi lên trên cả quân cờ nếu cần
-                    
+                    const imgUrl = type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png';
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'item ' + type;
+                    itemEl.style.backgroundImage = `url(${imgUrl})`;
+                    itemEl.style.top = data.pos.t + "%";
+                    itemEl.style.left = data.pos.l + "%";
+                    itemEl.style.zIndex = "150";
                     layer.appendChild(itemEl);
                     itemsOnBoard.push({ team: data.team, step: data.step, type: type, el: itemEl });
                 }
             }
         }
+
         function updatePawnStatus() {
             document.querySelectorAll('.pawn').forEach(p => {
                 const isCurrentTurn = parseInt(p.dataset.team) === turn;
@@ -371,9 +326,7 @@ itemEl.style.zIndex = "150"; // Thêm dòng này để nó nổi lên trên cả
                     p.style.filter = "drop-shadow(0 0 12px #000000) brightness(1.2)";
                 } else if (isCurrentTurn) {
                     p.style.filter = "drop-shadow(0 0 8px var(--dp))";
-                } else {
-                    p.style.filter = "none";
-                }
+                } else { p.style.filter = "none"; }
             });
         }
     </script>
