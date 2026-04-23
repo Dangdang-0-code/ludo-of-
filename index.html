@@ -281,22 +281,43 @@
         function spawnItems() {
             const layer = document.getElementById('items-layer');
             if (!layer) return;
-            layer.innerHTML = ''; itemsOnBoard = [];
+            layer.innerHTML = ''; 
+            itemsOnBoard = [];
+            
             let available = [];
+            // Thu thập tất cả các ô trống có thể đặt item trên 4 đường đi
             paths.forEach((path, t) => path.forEach((pos, s) => {
-                if (s > 1 && s < path.length - 1) available.push({t, s, pos});
+                // Không đặt ở ô đầu tiên (vừa xuất chuồng) và ô cuối cùng
+                if (s > 0 && s < path.length - 1) {
+                    available.push({t, s, pos});
+                }
             }));
+
+            // Trộn ngẫu nhiên các vị trí
             available.sort(() => Math.random() - 0.5);
-            ['fish','fish','cheese','cheese'].forEach((type, i) => {
+
+            // CÀI ĐẶT SỐ LƯỢNG ITEM TẠI ĐÂY
+            const numberOfItems = 12; // Bạn có thể chỉnh con số này (ví dụ: 8, 10, 12...)
+            
+            for (let i = 0; i < numberOfItems; i++) {
                 if (available[i]) {
+                    // Tỷ lệ: 50% Cá, 50% Phô mai
+                    const type = Math.random() > 0.5 ? 'fish' : 'cheese';
+                    
                     const item = document.createElement('div');
                     item.className = 'item ' + type;
                     item.style.backgroundImage = `url(${type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png'})`;
-                    item.style.top = available[i].pos.t + "%"; item.style.left = available[i].pos.l + "%";
+                    item.style.top = available[i].pos.t + "%"; 
+                    item.style.left = available[i].pos.l + "%";
+                    
                     layer.appendChild(item);
-                    itemsOnBoard.push({ team: available[i].t, step: available[i].s, type });
+                    itemsOnBoard.push({ 
+                        team: available[i].t, 
+                        step: available[i].s, 
+                        type 
+                    });
                 }
-            });
+            }
         }
 
         function updatePawnStatus() {
