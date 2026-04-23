@@ -35,20 +35,30 @@
         .item { width: 25px; height: 25px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
         @keyframes itemPop { from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } }
 
-        /* Luôn giữ mèo Xiêm gọn gàng 0.8x, dùng !important để không bị béo khi tới lượt */
+       /* 1. Giữ dáng 0.8x và vị trí chuẩn cho mèo Xiêm */
 img[src*="meo_xiem.png"] {
     transform: translate(-50%, -50%) scaleX(0.8) !important;
 }
 
-/* Hiệu ứng rung dành riêng cho mèo Xiêm để giữ nguyên tỉ lệ */
+/* 2. Khi tới lượt: Vừa Rung - Vừa Sáng - Vừa Mảnh Mai */
 img[src*="meo_xiem.png"].active {
     animation: shakeXiem 0.6s infinite !important;
 }
 
+/* 3. Định nghĩa hiệu ứng riêng để không bị "béo" lại */
 @keyframes shakeXiem {
-    0%, 100% { transform: translate(-50%, -50%) scaleX(0.8) rotate(0); }
-    25% { transform: translate(-50%, -50%) scaleX(0.8) rotate(5deg); }
-    75% { transform: translate(-50%, -50%) scaleX(0.8) rotate(-5deg); }
+    0%, 100% { 
+        transform: translate(-50%, -50%) scaleX(0.8) rotate(0); 
+        filter: drop-shadow(0 0 8px var(--dp)); /* Phát sáng tím */
+    }
+    25% { 
+        transform: translate(-50%, -50%) scaleX(0.8) rotate(5deg); 
+        filter: drop-shadow(0 0 15px var(--dp)); /* Sáng mạnh hơn khi nghiêng */
+    }
+    75% { 
+        transform: translate(-50%, -50%) scaleX(0.8) rotate(-5deg); 
+        filter: drop-shadow(0 0 15px var(--dp));
+    }
 }
         #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
     </style> 
