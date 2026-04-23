@@ -256,11 +256,27 @@
         }
 
         function startKickMode() {
-            isSelectingTarget = true;
-            document.querySelectorAll('.pawn').forEach(p => {
-                if (parseInt(p.dataset.team) !== turn && parseInt(p.dataset.step) !== -1 && parseInt(p.dataset.shield) === 0) p.classList.add('targetable');
+            // Tìm xem trên sân có đối thủ nào không (không ở chuồng, không có giáp)
+            const targets = document.querySelectorAll('.pawn');
+            let hasTarget = false;
+            
+            targets.forEach(p => {
+                if (parseInt(p.dataset.team) !== turn && parseInt(p.dataset.step) !== -1 && parseInt(p.dataset.shield) === 0) {
+                    p.classList.add('targetable');
+                    hasTarget = true;
+                }
             });
-            document.getElementById('turn-display').innerText = "CHỌN MỤC TIÊU ĐỂ ĐÁ!";
+
+            if (!hasTarget) {
+                // Nếu không có ai để đá, hiện thông báo rồi kết thúc lượt luôn
+                alert("Không có đối thủ nào trên sân để đá! Bạn mất lượt đá.");
+                isSelectingTarget = false;
+                endTurn(); 
+            } else {
+                // Nếu có đối thủ thì mới bắt đầu chế độ chọn mục tiêu
+                isSelectingTarget = true;
+                document.getElementById('turn-display').innerText = "CHỌN MỤC TIÊU ĐỂ ĐÁ!";
+            }
         }
 
         function kickPawn(m) {
