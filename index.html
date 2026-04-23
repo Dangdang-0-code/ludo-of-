@@ -211,35 +211,27 @@
         }
 
         function move(m) {
-            if(currentDice === 0 || parseInt(m.dataset.team) !== turn) return;
-            let nextStep = parseInt(m.dataset.step) + currentDice;
+           // ... bên trong hàm move(m) ...
+let fIdx = itemsOnBoard.findIndex(it => it.team === turn && it.step === nextStep);
+if (fIdx !== -1) {
+    const type = itemsOnBoard[fIdx].type;
+    // Xóa item đã ăn khỏi mảng và giao diện
+    itemsOnBoard.splice(fIdx, 1); 
+    
+    // Cập nhật lại giao diện (xóa cái hình item đó đi)
+    const layer = document.getElementById('items-layer');
+    if(layer.children[fIdx]) layer.removeChild(layer.children[fIdx]);
 
-            if (nextStep >= paths[turn].length) {
-                resetToHome(m);
-                showFact();
-                setTimeout(() => {
-                    alert("Mèo " + teamNames[turn] + " đã về đích!");
-                    endTurn();
-                }, 100);
-                return; 
-            } 
-
-            m.dataset.step = nextStep;
-            m.style.top = paths[turn][nextStep].t + "%";
-            m.style.left = paths[turn][nextStep].l + "%";
-            
-            let fIdx = itemsOnBoard.findIndex(it => it.team === turn && it.step === nextStep);
-            if(fIdx !== -1) {
-                const type = itemsOnBoard[fIdx].type;
-                itemsOnBoard.splice(fIdx, 1); 
-                spawnItems();
-                showFact();
-                if (type === 'fish') { startKickMode(); return; } 
-                else { m.dataset.shield = 2; m.classList.add('shielded'); }
-            }
-            endTurn();
-        }
-
+    showFact();
+    if (type === 'fish') { 
+        startKickMode(); 
+        return; 
+    } else { 
+        m.dataset.shield = 2; 
+        m.classList.add('shielded'); 
+    }
+}
+// ...
         function startKickMode() {
             const targets = document.querySelectorAll('.pawn');
             let hasTarget = false;
@@ -278,21 +270,51 @@
             updatePawnStatus();
         }
 
-        function spawnItems() {
-            const layer = document.getElementById('items-layer');
-            if (!layer) return;
-            layer.innerHTML = ''; 
-            itemsOnBoard = [];
-            
-            let available = [];
-            // Thu thập tất cả các ô trống có thể đặt item trên 4 đường đi
-            paths.forEach((path, t) => path.forEach((pos, s) => {
-                // Không đặt ở ô đầu tiên (vừa xuất chuồng) và ô cuối cùng
-                if (s > 0 && s < path.length - 1) {
-                    available.push({t, s, pos});
-                }
-            }));
+   function spawnItems() {
+    const layer = document.getElementById('items-layer');
+    if (!layer) return;
+    layer.innerHTML = ''; 
+    itemsOnBoard = [];
+    
+    let available = [];
+    // Thu thập ô trống từ cả 4 đường đi của 4 team
+    paths.forEach((path, teamIdx) => {
+        path.forEach((pos, stepIdx) => {
+            // Tránh ô đầu và ô cuối để game công bằng
+            if (stepIdx > 0 && stepIdx < path.length - 1) {
+                available.push({ team: teamIdx, step: stepIdx, pos: pos });
+            }
+        });
+    });
 
+    // Trộn ngẫu nhiên vị trí
+    available.sort(() => Math.random() - 0.5);
+
+    // CHỈNH SỐ LƯỢNG: Mình để 10 cái cho rực rỡ nhé
+    const totalToSpawn = 10; 
+    
+    for (let i = 0; i < totalToSpawn; i++) {
+        if (available[i]) {
+            const type = Math.random() > 0.5 ? 'fish' : 'cheese';
+            const itemData = available[i];
+            
+            const itemEl = document.createElement('div');
+            itemEl.className = 'item ' + type;
+            itemEl.style.backgroundImage = `url(${type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png'})`;
+            itemEl.style.top = itemData.pos.t + "%"; 
+            itemEl.style.left = itemData.pos.l + "%";
+            
+            layer.appendChild(itemEl);
+            
+            // Lưu vào mảng để kiểm tra va chạm
+            itemsOnBoard.push({ 
+                team: itemData.team, 
+                step: itemData.step, 
+                type: type 
+            });
+        }
+    }
+}
             // Trộn ngẫu nhiên các vị trí
             available.sort(() => Math.random() - 0.5);
 
