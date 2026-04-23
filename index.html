@@ -15,51 +15,27 @@
         #game-content { display: none; flex-direction: column; align-items: center; opacity: 0; transition: 0.8s; }
         #game-box { position: relative; width: 78vh; height: 78vh; background: white url('board.png') no-repeat center; background-size: 100% 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
         .pawn { width: 42px; height: 42px; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
-/* Ép tất cả mèo phải vào giữa ô */
-        .pawn { 
-            width: 42px !important; 
-            height: 42px !important; 
-            position: absolute !important; 
-            z-index: 100; 
-            cursor: pointer;
+.pawn { 
+            width: 42px !important; height: 42px !important; position: absolute !important; z-index: 100; cursor: pointer;
             transform-origin: center center !important;
             transform: translate(-50%, -50%) scale(var(--s, 1)) !important; 
             transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); 
         }
+        img.pawn[src*="meo_xiem.png"] { --s: 0.8 !important; }
+        .pawn.active { filter: drop-shadow(0 0 8px var(--dp)) !important; animation: shake 0.6s infinite !important; }
+        .pawn.targetable { filter: drop-shadow(0 0 15px red) !important; z-index: 200 !important; animation: pulseRed 0.5s infinite alternate !important; }
+        .pawn.shielded { filter: drop-shadow(0 0 12px var(--gold)) !important; outline: 3px solid var(--gold) !important; border-radius: 50% !important; }
 
-        /* Ép Meco luôn gầy */
-        img.pawn[src*="meo_xiem.png"] { 
-            --s: 0.8 !important; 
-        }
-
-        .pawn.active { 
-            filter: drop-shadow(0 0 8px var(--dp)) !important; 
-            animation: shake 0.6s infinite !important; 
-        }
-
-        .pawn.targetable { 
-            filter: drop-shadow(0 0 15px red) !important; 
-            z-index: 200 !important;
-            animation: pulseRed 0.5s infinite alternate !important;
-        }
-
-        .pawn.shielded { 
-            filter: drop-shadow(0 0 12px var(--gold)) !important; 
-            outline: 3px solid var(--gold) !important; 
-            border-radius: 50% !important; 
-        }
-
-        /* Animation chuẩn có sẵn translate để không bao giờ lệch */
         @keyframes shake { 
             0%, 100% { transform: translate(-50%, -50%) scale(var(--s, 1)) rotate(0); } 
             25% { transform: translate(-50%, -50%) scale(var(--s, 1)) rotate(5deg); } 
             75% { transform: translate(-50%, -50%) scale(var(--s, 1)) rotate(-5deg); } 
         }
-
         @keyframes pulseRed { 
             from { transform: translate(-50%, -50%) scale(var(--s, 1)); } 
-            to { transform: translate(-50%, -50%) scale(calc(var(--s, 1) * 1.2)); } 
+            to { transform: translate(-50%, -50%) scale(calc(var(--s, 1) * 1.25)); } 
         }
+
         .item { width: 25px; height: 25px; position: absolute; z-index: 50; transform: translate(-50%, -50%) rotate(20deg); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
         @keyframes itemPop { from { transform: translate(-50%, -50%) rotate(20deg) scale(0.9); } to { transform: translate(-50%, -50%) rotate(20deg) scale(1.1); } }
         #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
