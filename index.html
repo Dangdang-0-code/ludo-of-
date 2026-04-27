@@ -7,103 +7,120 @@
         :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; --gold: #ffd700; }
         body { margin: 0; background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
         
-        /* Màn hình chờ */
-        #loading-screen { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .progress-bar { width: 250px; height: 12px; background: #eee; border-radius: 10px; margin-top: 25px; overflow: hidden; }
-        #fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--p), var(--dp)); transition: width 2s linear; }
-        #btn-start { display: none; margin-top: 25px; padding: 12px 45px; border-radius: 30px; background: var(--dp); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(146, 146, 255, 0.4); }
-
-        /* Game chính */
-        #game-content { display: none; flex-direction: column; align-items: center; }
-        #game-box { position: relative; width: 80vh; height: 80vh; background: white url('board.png') no-repeat center; background-size: 100% 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 5px solid white; }
+        /* MÀN HÌNH LOADING VỚI ẢNH MỚI */
+        #loading-screen { 
+            position: fixed; inset: 0; 
+            background: #fce4ec url('image_d98ded.jpg') no-repeat center; 
+            background-size: cover; 
+            z-index: 9999; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end; 
+            padding-bottom: 10vh;
+        }
+        .progress-bar { width: 300px; height: 15px; background: rgba(255,255,255,0.5); border-radius: 10px; overflow: hidden; border: 2px solid #5b87c5; }
+        #fill { width: 0%; height: 100%; background: linear-gradient(90deg, #a55eff, #ff5ebf); transition: width 2s linear; }
         
-        .pawn { width: 42px; height: 42px; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #btn-start { 
+            display: none; margin-top: 20px; padding: 15px 50px; border-radius: 35px; 
+            background: #4a90e2; color: white; border: 3px solid #2c5a94; 
+            cursor: pointer; font-weight: bold; font-size: 20px; 
+            box-shadow: 0 6px 0 #2c5a94; transition: 0.2s;
+        }
+        #btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #2c5a94; }
+
+        /* GAME CHÍNH */
+        #game-content { display: none; flex-direction: column; align-items: center; }
+        #game-box { 
+            position: relative; width: 80vh; height: 80vh; 
+            background: white url('board.png') no-repeat center; 
+            background-size: 100% 100%; border-radius: 15px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 5px solid white; 
+        }
+        
+        .pawn { width: 45px; height: 45px; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .pawn.active { filter: drop-shadow(0 0 8px var(--dp)); animation: shake 0.6s infinite; }
         .pawn.targetable { filter: drop-shadow(0 0 15px red); animation: pulseRed 0.5s infinite; z-index: 200; border: 3px solid red; border-radius: 50%; }
         .pawn.shielded { filter: drop-shadow(0 0 12px var(--gold)); border: 3px solid var(--gold); border-radius: 50%; }
 
-        /* Modals */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .card { background: white; width: 380px; padding: 35px; border-radius: 30px; border: 5px solid var(--p); text-align: center; position: relative; }
+        /* MODALS */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .card { background: white; width: 400px; padding: 35px; border-radius: 30px; border: 6px solid var(--p); text-align: center; }
         
-        .corner-btn { position: fixed; top: 20px; width: 50px; height: 50px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 6000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .corner-btn { position: fixed; top: 20px; width: 50px; height: 50px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 6000; }
         #help-btn { right: 20px; }
         #settings-btn { left: 20px; }
 
-        .item { width: 35px; height: 35px; position: absolute; z-index: 50; transform: translate(-50%, -50%); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
+        .item { width: 38px; height: 38px; position: absolute; z-index: 50; transform: translate(-50%, -50%); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
         #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
         
         @keyframes pulseRed { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.2); } }
         @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 25% { transform: translate(-50%, -50%) rotate(5deg); } 75% { transform: translate(-50%, -50%) rotate(-5deg); } }
-        @keyframes itemPop { from { transform: translate(-50%, -50%) scale(0.9); } to { transform: translate(-50%, -50%) scale(1.1); } }
+        @keyframes itemPop { from { transform: translate(-50%, -50%) scale(0.95); } to { transform: translate(-50%, -50%) scale(1.1); } }
     </style> 
 </head>
 <body>
 
     <div id="loading-screen">
-        <h2 style="color: var(--dp); letter-spacing: 3px; margin: 0;">Ludo Of Facts</h2>
         <div class="progress-bar"><div id="fill"></div></div>
-        <button id="btn-start" onclick="enterGame()">BẮT ĐẦU CHƠI</button>
+        <button id="btn-start" onclick="enterGame()">ENTER GAME</button>
     </div>
 
     <button id="settings-btn" class="corner-btn" onclick="openModal('settings-modal')">⚙️</button>
     <button id="help-btn" class="corner-btn" onclick="openModal('help-modal')">?</button>
 
     <div id="game-content">
-        <div id="turn-info" style="font-size: 22px; font-weight: bold; color: var(--dp); background: white; padding: 8px 35px; border-radius: 50px; margin-bottom: 15px;">
+        <div id="turn-info" style="font-size: 22px; font-weight: bold; color: var(--dp); background: white; padding: 10px 40px; border-radius: 50px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
             Lượt: <span id="turn-display">Luca</span>
         </div>
         <div id="game-box"><div id="items-layer"></div></div>
-        <div style="display: flex; align-items: center; gap: 25px; margin-top: 15px; background: white; padding: 10px 40px; border-radius: 50px;">
-            <div id="dice-res" style="font-size: 32px; font-weight: bold;">🎲 0</div>
-            <button id="roll-btn" style="padding: 12px 30px; background: var(--dp); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold;" onclick="roll()">ĐỔ XÚC XẮC</button>
+        <div style="display: flex; align-items: center; gap: 25px; margin-top: 15px; background: white; padding: 12px 45px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <div id="dice-res" style="font-size: 35px; font-weight: bold;">🎲 0</div>
+            <button id="roll-btn" style="padding: 12px 35px; background: var(--dp); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 16px;" onclick="roll()">ĐỔ XÚC XẮC</button>
         </div>
     </div>
 
     <div id="help-modal" class="modal" onclick="closeModal('help-modal')">
         <div class="card" onclick="event.stopPropagation()">
             <h2 style="color: var(--dp)">📜 LUẬT CHƠI</h2>
-            <div style="text-align: left; margin: 20px 0; font-size: 15px;">
+            <div style="text-align: left; margin: 20px 0; line-height: 1.6;">
                 <p>💡 <b>Kiến thức:</b> Hiện ra khi nhặt vật phẩm hoặc về đích.</p>
-                <p>🐟 <b>Cá:</b> Được chọn để đá 1 mèo đối thủ bất kỳ.</p>
-                <p>🧀 <b>Phô mai:</b> Khiên bảo vệ mèo trong 2 lượt.</p>
+                <p>🐟 <b>Cá:</b> Nhặt được sẽ có quyền chọn 1 đối thủ để đá về chuồng.</p>
+                <p>🧀 <b>Phô mai:</b> Nhận khiên bảo vệ mèo không bị đá trong 2 lượt.</p>
             </div>
-            <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer;">ĐÃ HIỂU</button>
+            <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 12px 35px; border-radius: 20px; cursor: pointer; font-weight: bold;">ĐÃ HIỂU</button>
         </div>
     </div>
 
     <div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
         <div class="card" onclick="event.stopPropagation()">
             <h2 style="color: var(--dp)">⚙️ CÀI ĐẶT</h2>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0; padding: 12px; background: #f8f9fa; border-radius: 15px;">
-                <span>Âm thanh</span>
-                <button id="music-toggle" onclick="toggleMusic()" style="border: none; background: #ff5252; color: white; padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: bold;">TẮT</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 20px;">
+                <span style="font-weight: bold;">Âm nhạc</span>
+                <button id="music-toggle" onclick="toggleMusic()" style="border: none; background: #ff5252; color: white; padding: 10px 25px; border-radius: 12px; cursor: pointer; font-weight: bold;">TẮT</button>
             </div>
-            <button onclick="copyLink()" style="width: 100%; padding: 12px; border: none; background: var(--p); color: white; border-radius: 15px; cursor: pointer; font-weight: bold; margin-bottom: 20px;">COPY LINK GAME</button>
+            <button onclick="copyLink()" style="width: 100%; padding: 15px; border: none; background: var(--p); color: white; border-radius: 20px; cursor: pointer; font-weight: bold; margin-bottom: 25px;">COPY LINK GAME</button>
             
-            <div style="border-top: 1px solid #eee; padding-top: 15px;">
-                <p style="font-size: 12px; color: #888; margin: 0;">SẢN PHẨM BỞI:</p>
-                <p style="font-size: 18px; color: var(--dp); font-weight: 900; margin: 5px 0;">SANG - GIANG - ĐAN</p>
-                <p style="font-size: 11px; color: #aaa;">Ludo Of Facts - Class 7A5</p>
+            <div style="border-top: 2px solid #eee; padding-top: 20px;">
+                <p style="font-size: 13px; color: #888; margin: 0;">SẢN PHẨM BỞI:</p>
+                <p style="font-size: 20px; color: var(--dp); font-weight: 900; margin: 5px 0; letter-spacing: 1px;">SANG - GIANG - ĐAN</p>
+                <p style="font-size: 12px; color: #aaa;">Ludo Of Facts - Class 7A5</p>
             </div>
-            <button onclick="closeModal('settings-modal')" style="margin-top: 15px; background: #eee; border: none; padding: 8px 20px; border-radius: 15px; cursor: pointer;">ĐÓNG</button>
+            <button onclick="closeModal('settings-modal')" style="margin-top: 20px; background: #eee; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer;">ĐÓNG</button>
         </div>
     </div>
 
     <div id="fact-modal" class="modal">
         <div class="card">
             <h3 style="color: var(--dp)">💡 BẠN CÓ BIẾT?</h3>
-            <p id="fact-txt" style="font-size: 17px; line-height: 1.5; min-height: 60px;"></p>
-            <div id="timer-display" style="font-size: 30px; font-weight: bold; color: var(--dp);">5</div>
-            <button id="ok-btn" onclick="closeFact()" style="padding: 12px 40px; border: none; border-radius: 20px; background: #bbb; color: white; cursor: pointer; font-weight: bold;">ĐANG ĐỌC...</button>
+            <p id="fact-txt" style="font-size: 18px; line-height: 1.6; min-height: 70px; margin: 20px 0;"></p>
+            <div id="timer-display" style="font-size: 35px; font-weight: 900; color: var(--dp); margin-bottom: 15px;">5</div>
+            <button id="ok-btn" onclick="closeFact()" style="padding: 15px 50px; border: none; border-radius: 25px; background: #bbb; color: white; cursor: pointer; font-weight: bold;">ĐANG ĐỌC...</button>
         </div>
     </div>
 
     <audio id="bgMusic" loop src="pixel-drift-pecan-pie-main-version-41106-02-09.mp3"></audio>
 
     <script>
-        // --- DATA & 50 FACTS ---
-        const allFacts = ["Sứa bất tử có thể đảo ngược chu kỳ sống.","Bọ hung kéo vật nặng gấp 1.141 lần cơ thể.","Rùa biển có thể thở qua hậu môn.","Bạch tuộc có 3 tim và 9 bộ não.","Tôm tít đấm nhanh đến mức tạo ra nhiệt.","Voi là động vật duy nhất không thể nhảy.","Chim ruồi có thể bay lùi.","Mèo ngủ 70% cuộc đời.","Sao Kim quay ngược chiều kim đồng hồ.","Mật ong không bao giờ bị hỏng.","Ốc sên có thể ngủ 3 năm.","Tiếng vịt không có tiếng vang.","Mắt đà điểu to hơn não.","Hươu cao cổ không có dây thanh quản.","Lưỡi cá voi xanh nặng bằng một con voi.","Cá mập già hơn cả cây cối.","Kiến không bao giờ ngủ.","Hà mã đổ mồ hôi màu đỏ.","Kanguru không thể đi lùi.","Lợn không thể nhìn lên trời.","Gấu Bắc Cực có làn da màu đen.","Hổ có da vằn hệt như lớp lông.","Mây nặng khoảng 500 tấn.","Vàng có thể ăn được.","Âm thanh dưới nước nhanh gấp 4 lần.","Sao Kim có một ngày dài hơn một năm.","Koala có vân tay như người.","Xương đùi người cứng hơn bê tông.","Trẻ em nhiều xương hơn người lớn.","Bộ não hoạt động mạnh hơn khi ngủ.","Răng người cứng ngang với đá.","Bướm nếm vị thức ăn bằng chân.","Sao Thổ và sao Mộc có mưa kim cương.","Kiến nhấc được vật nặng gấp 50 lần.","Mỗi người có một dấu lưỡi riêng.","Cá vàng nhớ được thông tin vài tháng.","Lạc đà có tới 3 mí mắt.","Chuột cũng biết cười khi bị thọc lét.","Bọ ngựa có tai nằm ở giữa hai chân.","Voi gọi nhau bằng sóng hạ âm.","Tàu vũ trụ đi qua sao Thổ mất 7 năm.","Muỗi thích đốt người nhóm máu O nhất.","Con người cao thêm một chút vào sáng sớm.","Trái tim đập 100.000 lần mỗi ngày.","Sét đánh trúng Trái Đất 100 lần mỗi giây.","Kim cương là vật chất cứng nhất.","Cá ngựa đực là loài đẻ con.","Bạch tuộc phun mực để chạy trốn.","Gấu trúc ăn 12 tiếng mỗi ngày.","Chim ruồi có nhịp tim 1.200 lần/phút."];
+        const allFacts = ["Sứa bất tử có thể đảo ngược chu kỳ sống.","Bọ hung kéo vật nặng gấp 1.141 lần cơ thể.","Rùa biển có thể thở qua hậu môn.","Bạch tuộc có 3 tim và 9 bộ não.","Tôm tít đấm nhanh đến mức tạo ra nhiệt.","Voi không thể nhảy.","Chim ruồi có thể bay lùi.","Mèo ngủ 70% cuộc đời.","Sao Kim quay ngược chiều kim đồng hồ.","Mật ong không hỏng.","Ốc sên ngủ 3 năm.","Tiếng vịt không có tiếng vang.","Mắt đà điểu to hơn não.","Hươu cao cổ không có dây thanh quản.","Lưỡi cá voi xanh nặng bằng một con voi.","Cá mập già hơn cây cối.","Kiến không bao giờ ngủ.","Hà mã mồ hôi màu đỏ.","Kanguru không thể đi lùi.","Lợn không thể nhìn lên trời.","Gấu Bắc Cực da màu đen.","Hổ có da vằn.","Mây nặng 500 tấn.","Vàng ăn được.","Âm thanh dưới nước nhanh gấp 4.","Sao Kim ngày dài hơn năm.","Koala có vân tay như người.","Xương đùi cứng hơn bê tông.","Trẻ em nhiều xương hơn người lớn.","Não mạnh hơn khi ngủ.","Răng người cứng ngang đá.","Bướm nếm bằng chân.","Sao Thổ mưa kim cương.","Kiến nhấc vật nặng gấp 50 lần.","Mỗi người có dấu lưỡi riêng.","Cá vàng nhớ được vài tháng.","Lạc đà có 3 mí mắt.","Chuột biết cười.","Bọ ngựa tai ở giữa chân.","Voi gọi nhau bằng hạ âm.","Muỗi thích nhóm máu O.","Người cao thêm vào buổi sáng.","Tim đập 100.000 lần/ngày.","Sét đánh 100 lần/giây.","Kim cương cứng nhất.","Cá ngựa đực đẻ con.","Bạch tuộc phun mực.","Gấu trúc ăn 12 tiếng/ngày.","Chim ruồi tim đập 1200 lần/phút.","Mèo có 32 cơ ở mỗi tai."];
         
         let factPool = [...allFacts];
         const paths = [
@@ -193,19 +210,19 @@
                     if (type === 'fish') startKickMode(); 
                     else { m.dataset.shield = 2; m.classList.add('shielded'); endTurn(); }
                 });
-            } else { setTimeout(endTurn, 400); }
+            } else { setTimeout(endTurn, 450); }
         }
 
         function startKickMode() {
             isSelectingTarget = true;
-            let count = 0;
+            let found = false;
             document.querySelectorAll('.pawn').forEach(p => {
                 if (parseInt(p.dataset.team) !== turn && parseInt(p.dataset.step) !== -1 && parseInt(p.dataset.shield) === 0) {
-                    p.classList.add('targetable'); count++;
+                    p.classList.add('targetable'); found = true;
                 }
             });
-            if (count === 0) endTurn();
-            else document.getElementById('turn-display').innerText = "CHỌN MÈO ĐỐI THỦ!";
+            if (!found) endTurn();
+            else document.getElementById('turn-display').innerText = "HÃY ĐÁ 1 ĐỐI THỦ!";
         }
 
         function resetToHome(m) {
@@ -246,7 +263,7 @@
 
         function spawnItems() {
             itemsOnBoard = [];
-            for(let i=0; i<12; i++) {
+            for(let i=0; i<15; i++) {
                 itemsOnBoard.push({ team: Math.floor(Math.random()*4), step: Math.floor(Math.random()*7)+1, type: Math.random()>0.5?'fish':'cheese' });
             }
             renderItems();
@@ -267,8 +284,9 @@
 
         function updatePawnStatus() {
             document.querySelectorAll('.pawn').forEach(p => {
-                p.classList.toggle('active', parseInt(p.dataset.team) === turn);
-                p.style.opacity = parseInt(p.dataset.team) === turn ? "1" : "0.4";
+                let isMy = parseInt(p.dataset.team) === turn;
+                p.classList.toggle('active', isMy);
+                p.style.opacity = isMy ? "1" : "0.5";
             });
         }
 
