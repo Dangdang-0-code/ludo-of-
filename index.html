@@ -100,26 +100,21 @@
         }
 
         function init() {
-            const box = document.getElementById('game-box');
-            box.querySelectorAll('.pawn').forEach(p => p.remove());
-            const colors = ['#000', '#ffeb3b', '#ff9800', '#fff']; // Màu thay cho ảnh nếu ảnh lỗi
-            
-            for(let tIdx=0; tIdx<4; tIdx++) {
-                for(let i=0; i<4; i++) {
-                    const m = document.createElement('div');
-                    m.className = 'pawn';
-                    m.style.backgroundColor = colors[tIdx];
-                    m.style.border = "2px solid #333";
-                    m.dataset.team = tIdx; m.dataset.id = i; m.dataset.step = -1;
-                    resetToHome(m);
-                    m.onclick = () => handlePawnClick(m);
-                    box.appendChild(m);
-                }
-            }
-            spawnItems();
-            updatePawnStatus();
+    const box = document.getElementById('game-box');
+    box.querySelectorAll('.pawn').forEach(p => p.remove());
+    const imgs = ['meo_den.png', 'meo_xiem.png', 'meo_vang.png', 'meo_trang.png'];
+    
+    for(let tIdx=0; tIdx<4; tIdx++) {
+        for(let i=0; i<4; i++) {
+            const m = document.createElement('img'); // Đổi sang thẻ img
+            m.className = 'pawn';
+            m.src = imgs[tIdx]; // Gán hình ảnh tương ứng với đội
+            // Bỏ dòng m.style.backgroundColor cũ đi
         }
-
+    }
+    spawnItems();
+    updatePawnStatus();
+}
         function roll() {
             if(currentDice > 0 || isSelectingTarget) return;
             currentDice = Math.floor(Math.random()*6)+1;
