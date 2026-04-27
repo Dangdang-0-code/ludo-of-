@@ -2,48 +2,44 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Ludo Of Facts - Cờ Cá Ngựa Online</title>
+    <title>Ludo Of Facts - Class 7A5</title>
     <style>
         :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; --gold: #ffd700; }
         body { margin: 0; background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
         
-        /* Màn hình chờ */
-        #loading-screen { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
+        /* Loading Screen */
+        #loading-screen { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .progress-bar { width: 250px; height: 12px; background: #eee; border-radius: 10px; margin-top: 25px; overflow: hidden; }
         #fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--p), var(--dp)); transition: width 2s linear; }
-        #btn-start { display: none; margin-top: 25px; padding: 12px 45px; border-radius: 30px; background: var(--dp); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(146, 146, 255, 0.4); }
+        #btn-start { display: none; margin-top: 25px; padding: 12px 45px; border-radius: 30px; background: var(--dp); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; }
 
-        /* Game chính */
-        #game-content { display: none; flex-direction: column; align-items: center; opacity: 0; transition: 0.8s; }
-        #game-box { position: relative; width: 78vh; height: 78vh; background: white url('board.png') no-repeat center; background-size: 100% 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        /* Game Content */
+        #game-content { display: none; flex-direction: column; align-items: center; }
+        #game-box { position: relative; width: 78vh; height: 78vh; background: #fff; border: 4px solid var(--p); border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
         
-        .pawn { width: 42px; height: 42px; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.4s ease-out; }
+        .pawn { width: 40px; height: 40px; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.4s ease-out; border-radius: 50%; }
         .pawn.active { filter: drop-shadow(0 0 8px var(--dp)); animation: shake 0.6s infinite; }
-        .pawn.targetable { filter: drop-shadow(0 0 15px red); animation: pulseRed 0.5s infinite; z-index: 200; border: 3px solid red; border-radius: 50%; }
-        .pawn.shielded { filter: drop-shadow(0 0 12px var(--gold)); border: 3px solid var(--gold); border-radius: 50%; }
+        .pawn.targetable { filter: drop-shadow(0 0 15px red); animation: pulseRed 0.5s infinite; z-index: 200; border: 3px solid red; }
 
         /* Modals */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        .card { background: white; width: 380px; padding: 35px; border-radius: 30px; border: 5px solid var(--p); text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 5000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .card { background: white; width: 350px; padding: 30px; border-radius: 30px; border: 5px solid var(--p); text-align: center; }
         
-        .corner-btn { position: fixed; top: 20px; width: 45px; height: 45px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 6000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .corner-btn { position: fixed; top: 20px; width: 45px; height: 45px; background: white; border: 3px solid var(--p); border-radius: 50%; font-size: 24px; cursor: pointer; z-index: 6000; display: flex; align-items: center; justify-content: center; }
         #help-btn { right: 20px; }
         #settings-btn { left: 20px; }
 
-        .help-item { display: flex; align-items: center; gap: 15px; text-align: left; margin: 12px 0; }
-        .item { width: 30px; height: 30px; position: absolute; z-index: 50; transform: translate(-50%, -50%); background-size: contain; background-repeat: no-repeat; animation: itemPop 0.8s infinite alternate; }
+        .item { width: 30px; height: 30px; position: absolute; z-index: 50; transform: translate(-50%, -50%); background-color: var(--p); border-radius: 50%; border: 2px solid white; }
+        #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
         
         @keyframes pulseRed { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.2); } }
         @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 25% { transform: translate(-50%, -50%) rotate(5deg); } 75% { transform: translate(-50%, -50%) rotate(-5deg); } }
-        @keyframes itemPop { from { transform: translate(-50%, -50%) scale(0.9); } to { transform: translate(-50%, -50%) scale(1.1); } }
-        #items-layer { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
     </style> 
 </head>
 <body>
 
     <div id="loading-screen">
-        <div style="font-size: 50px; margin-bottom: 10px;">🐱</div>
-        <h2 style="color: var(--dp); letter-spacing: 3px; margin: 0;">Ludo Of Facts</h2>
+        <h2 style="color: var(--dp);">Ludo Of Facts</h2>
         <div class="progress-bar"><div id="fill"></div></div>
         <button id="btn-start" onclick="enterGame()">BẮT ĐẦU CHƠI</button>
     </div>
@@ -52,195 +48,74 @@
     <button id="help-btn" class="corner-btn" onclick="openModal('help-modal')">?</button>
 
     <div id="game-content">
-        <div id="turn-info" style="font-size: 22px; font-weight: bold; color: var(--dp); background: white; padding: 8px 35px; border-radius: 50px; margin-bottom: 10px;">Lượt: <span id="turn-display">Luca</span></div>
-        <div id="game-box"><div id="items-layer"></div></div>
-        <div style="display: flex; align-items: center; gap: 25px; margin-top: 15px; background: white; padding: 10px 40px; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-            <div id="dice-res" style="font-size: 32px; font-weight: bold;">🎲 0</div>
-            <button id="roll-btn" style="padding: 12px 30px; background: var(--dp); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold;" onclick="roll()">ĐỔ XÚC XẮC</button>
-        </div>
-    </div>
-
-    <div id="help-modal" class="modal" onclick="closeModal('help-modal')">
-        <div class="card" onclick="event.stopPropagation()">
-            <h2 style="color: var(--dp); margin-top:0;">📜 LUẬT CHƠI</h2>
-            <div class="help-item"><span>💡</span> <b>Kiến thức:</b> Xuất hiện khi nhặt item hoặc về đích.</div>
-            <div class="help-item"><span>🚀</span> <b>Về đích:</b> Quay lại chuồng và bắt đầu vòng mới.</div>
-            <div class="help-item"><img src="image_492b85.png" width="30"> <b>Cá:</b> Đá 1 mèo đối thủ bất kỳ.</div>
-            <div class="help-item"><img src="image_492b6a.png" width="30"> <b>Phô mai:</b> Khiên bảo vệ trong 2 lượt.</div>
-            <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 15px;">ĐÃ HIỂU</button>
+        <div id="turn-info" style="font-size: 20px; margin-bottom: 10px; font-weight: bold; color: var(--dp);">Lượt: <span id="turn-display">Luca</span></div>
+        <div id="game-box" style="background-image: url('board.png'); background-size: 100% 100%;"><div id="items-layer"></div></div>
+        <div style="margin-top: 15px; display: flex; gap: 20px; align-items: center; background: white; padding: 10px 30px; border-radius: 50px;">
+            <div id="dice-res" style="font-size: 28px; font-weight: bold;">🎲 0</div>
+            <button id="roll-btn" onclick="roll()" style="padding: 10px 25px; background: var(--dp); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold;">ĐỔ XÚC XẮC</button>
         </div>
     </div>
 
     <div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
         <div class="card" onclick="event.stopPropagation()">
-            <h2 style="color: var(--dp); margin-top:0;">⚙️ CÀI ĐẶT</h2>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0; padding: 12px; background: #f8f9fa; border-radius: 15px;">
-                <span style="font-weight: bold;">Âm thanh</span>
-                <button id="music-toggle" onclick="toggleMusic()" style="border: none; background: #ff5252; color: white; padding: 8px 18px; border-radius: 10px; cursor: pointer;">TẮT</button>
+            <h2 style="color: var(--dp)">⚙️ CÀI ĐẶT</h2>
+            <button onclick="copyLink()" style="width: 100%; padding: 12px; margin: 10px 0; border: none; background: var(--p); color: white; border-radius: 15px; cursor: pointer; font-weight: bold;">COPY LINK GAME</button>
+            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
+                <p style="font-size: 12px; color: #888;">DEVELOPED BY:</p>
+                <p style="font-weight: 900; color: var(--dp);">SANG - GIANG - ĐAN</p>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0; padding: 12px; background: #f8f9fa; border-radius: 15px;">
-                <span style="font-weight: bold;">Chia sẻ</span>
-                <button onclick="copyLink()" style="border: none; background: var(--dp); color: white; padding: 8px 18px; border-radius: 10px; cursor: pointer;">COPY LINK</button>
-            </div>
-            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
-                <p style="margin: 0; font-size: 12px; color: #888;">SẢN PHẨM BỞI:</p>
-                <p style="font-size: 18px; color: var(--dp); font-weight: 900; margin: 5px 0;">SANG - GIANG - ĐAN</p>
-                <p style="font-size: 11px; color: #aaa;">Ludo Of Facts - v2.1</p>
-            </div>
-            <button onclick="closeModal('settings-modal')" style="background: #eee; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 15px;">ĐÓNG</button>
+            <button onclick="closeModal('settings-modal')" style="margin-top: 10px; border: none; background: #eee; padding: 8px 20px; border-radius: 10px;">ĐÓNG</button>
         </div>
     </div>
 
     <div id="fact-modal" class="modal">
         <div class="card">
             <h3 style="color: var(--dp)">💡 BẠN CÓ BIẾT?</h3>
-            <p id="fact-txt" style="font-size: 18px; line-height: 1.6; min-height: 80px;"></p>
-            <div id="timer-display" style="font-size: 35px; font-weight: 900; color: var(--dp);">5</div>
-            <button id="ok-btn" onclick="closeFact()" style="background: #bbb; border: none; padding: 12px 40px; border-radius: 20px; color: white; cursor: pointer;">ĐANG ĐỌC...</button>
+            <p id="fact-txt" style="font-size: 16px; min-height: 60px;"></p>
+            <div id="timer-display" style="font-size: 24px; font-weight: bold; color: var(--dp);">5</div>
+            <button id="ok-btn" onclick="closeFact()" style="padding: 10px 30px; border: none; border-radius: 15px; background: #bbb; color: white;">ĐANG ĐỌC...</button>
         </div>
     </div>
 
-    <audio id="bgMusic" loop src="pixel-drift-pecan-pie-main-version-41106-02-09.mp3"></audio>
-
     <script>
-        // --- DATA ---
-        const paths = [
-            [{t:6, l:44.5}, {t:13, l:44.5}, {t:20, l:44.5}, {t:27, l:44.5}, {t:34, l:44.5}, {t:41, l:38}, {t:41, l:31}, {t:41, l:24}, {t:41, l:17}, {t:41, l:10}],
-            [{t:44.5, l:94}, {t:44.5, l:87}, {t:44.5, l:80}, {t:44.5, l:73}, {t:44.5, l:66}, {t:38, l:59}, {t:31, l:59}, {t:24, l:59}, {t:17, l:59}, {t:10, l:59}],
-            [{t:55.5, l:6}, {t:55.5, l:13}, {t:55.5, l:20}, {t:55.5, l:27}, {t:55.5, l:34}, {t:62, l:41}, {t:69, l:41}, {t:76, l:41}, {t:83, l:41}, {t:90, l:41}],
-            [{t:94, l:55.5}, {t:87, l:55.5}, {t:80, l:55.5}, {t:73, l:55.5}, {t:66, l:55.5}, {t:59, l:62}, {t:59, l:69}, {t:59, l:76}, {t:59, l:83}, {t:59, l:90}]
-        ];
-        const homePositions = [
-            {t:[17,17,28,28], l:[17,28,17,28]}, {t:[17,17,28,28], l:[72,83,72,83]}, 
-            {t:[72,72,83,83], l:[17,28,17,28]}, {t:[72,72,83,83], l:[72,83,72,83]}
-        ];
-       // --- 50 FACTS ÍT NGƯỜI BIẾT & LOGIC CHỐNG TRÙNG ---
-        const allFacts = [
-            "Sứa bất tử có thể đảo ngược chu kỳ sống để quay lại dạng polyp.",
-            "Bọ hung có thể kéo vật nặng gấp 1.141 lần trọng lượng cơ thể.",
-            "Rùa biển có thể thở thông qua hậu môn của chúng.",
-            "Bạch tuộc có 3 trái tim và 9 bộ não.",
-            "Tôm tít đấm nhanh đến mức tạo ra bong bóng nhiệt độ ngang mặt trời.",
-            "Voi là loài động vật duy nhất không thể nhảy.",
-            "Chim ruồi là loài chim duy nhất có khả năng bay lùi.",
-            "Mèo dành khoảng 70% cuộc đời của chúng để ngủ.",
-            "Sao Kim là hành tinh duy nhất quay theo chiều kim đồng hồ.",
-            "Mật ong là thực phẩm duy nhất không bao giờ bị hư hỏng.",
-            "Ốc sên có thể ngủ liên tục trong suốt 3 năm.",
-            "Tiếng kêu của vịt không bao giờ có tiếng vang (echo).",
-            "Mắt của đà điểu còn to hơn cả bộ não của nó.",
-            "Chuột có thể sinh sản nhanh đến mức 2 con có thể tạo ra 1 triệu con sau 18 tháng.",
-            "Hươu cao cổ không có dây thanh quản.",
-            "Lưỡi của cá voi xanh nặng bằng cả một con voi trưởng thành.",
-            "Cá mập đã tồn tại trên Trái Đất lâu hơn cả cây cối.",
-            "Dấu vân mũi của mỗi con chó là duy nhất, giống như vân tay người.",
-            "Kiến không bao giờ ngủ và cũng không có phổi.",
-            "Mồ hôi của hà mã có màu đỏ để chống nắng và diệt khuẩn.",
-            "Kanguru không thể đi lùi.",
-            "Mắt của tôm tít có thể nhìn thấy những màu sắc mà con người không tưởng tượng nổi.",
-            "Lợn không thể nhìn lên bầu trời vì cấu tạo cổ.",
-            "Chim cánh cụt có thể nhảy cao tới 2 mét trên mặt nước.",
-            "Gấu Bắc Cực thực chất có làn da màu đen dưới lớp lông trắng.",
-            "Hổ không chỉ có lông vằn mà da của chúng cũng có vằn.",
-            "Một đám mây tích điện trung bình nặng khoảng 500 tấn.",
-            "Trái Đất là hành tinh duy nhất không được đặt tên theo một vị thần.",
-            "Kim cương có thể bị đốt cháy nếu ở nhiệt độ đủ cao.",
-            "Sấm sét đánh vào Trái Đất khoảng 100 lần mỗi giây.",
-            "Vàng là nguyên tố có thể ăn được (nhưng không có vị gì).",
-            "Nước nóng đóng băng nhanh hơn nước lạnh (hiệu ứng Mpemba).",
-            "Âm thanh truyền đi trong nước nhanh gấp 4 lần trong không khí.",
-            "Một ngày trên sao Kim dài hơn một năm trên chính nó.",
-            "Mỗi giây có khoảng 2 người qua đời nhưng có 4 đứa trẻ chào đời.",
-            "Dấu chân trên mặt trăng sẽ tồn tại ít nhất 100 triệu năm vì không có gió.",
-            "Cơ bắp mạnh nhất của con người dựa trên trọng lượng là lưỡi.",
-            "Xương đùi của người còn cứng hơn cả bê tông.",
-            "Trái tim người có thể tạo ra áp lực đủ để phun máu xa 9 mét.",
-            "Mỗi người trung bình mất khoảng 4kg tế bào da mỗi năm.",
-            "Bạn không thể vừa hít vào vừa nuốt cùng một lúc.",
-            "Trẻ em có nhiều xương hơn người lớn (khoảng 300 so với 206).",
-            "Koala có dấu vân tay gần như hệt như con người.",
-            "Thằn lằn có thể tự rụng đuôi để trốn thoát kẻ thù.",
-            "Cá vàng có trí nhớ lâu hơn 3 giây (thực tế là vài tháng).",
-            "Vẹt có thể hiểu được khái niệm về con số không (0).",
-            "Mưa trên sao Thổ và sao Mộc thực chất là kim cương.",
-            "Tên của tất cả các châu lục đều kết thúc bằng chữ cái mà chúng bắt đầu.",
-            "Cơ thể con người chứa đủ lượng carbon để làm ra 9.000 chiếc bút chì.",
-            "Bộ não người hoạt động mạnh hơn khi chúng ta đang ngủ."
-        ];
-
-        let factPool = [...allFacts]; // Tạo bản sao để rút dần
-
-        function getUniqueFact() {
-            // Nếu dùng hết fact rồi thì nạp lại từ đầu
-            if (factPool.length === 0) {
-                factPool = [...allFacts];
-            }
-            // Lấy ngẫu nhiên 1 câu trong danh sách còn lại
-            const randomIndex = Math.floor(Math.random() * factPool.length);
-            const fact = factPool[randomIndex];
-            
-            // Xóa câu đó khỏi danh sách để không bị lặp lại
-            factPool.splice(randomIndex, 1);
-            
-            return fact;
-        }
-
-        // --- CẬP NHẬT LẠI HÀM SHOWFACT ---
-        function showFact(callback) {
-            factCallback = callback;
-            // Gọi hàm lấy fact không trùng
-            document.getElementById('fact-txt').innerText = getUniqueFact();
-            
-            openModal('fact-modal');
-            let s = 5;
-            const btn = document.getElementById('ok-btn');
-            btn.disabled = true; 
-            btn.style.background = "#bbb"; 
-            btn.innerText = "ĐANG ĐỌC...";
-            
-            const timer = setInterval(() => {
-                s--; 
-                document.getElementById('timer-display').innerText = s;
-                if(s <= 0) { 
-                    clearInterval(timer); 
-                    btn.disabled = false; 
-                    btn.style.background = "#9292ff"; 
-                    btn.innerText = "XÁC NHẬN"; 
-                }
-            }, 1000);
-        }
+        // --- DATA & 50 FACTS ---
+        const allFacts = ["Sứa bất tử có thể đảo ngược chu kỳ sống.", "Bọ hung kéo vật nặng gấp 1.141 lần cơ thể.", "Rùa biển có thể thở qua hậu môn.", "Bạch tuộc có 3 tim và 9 bộ não.", "Tôm tít đấm nhanh đến mức tạo ra nhiệt.", "Voi không thể nhảy.", "Chim ruồi có thể bay lùi.", "Mèo ngủ 70% cuộc đời.", "Sao Kim quay ngược chiều kim đồng hồ.", "Mật ong không bao giờ bị hỏng.", "Ốc sên có thể ngủ 3 năm.", "Tiếng vịt không có tiếng vang.", "Mắt đà điểu to hơn não.", "Hươu cao cổ không có dây thanh quản.", "Lưỡi cá voi xanh nặng bằng một con voi.", "Cá mập già hơn cây cối.", "Kiến không bao giờ ngủ.", "Hà mã đổ mồ hôi màu đỏ.", "Kanguru không thể đi lùi.", "Lợn không thể nhìn lên trời.", "Gấu Bắc Cực da màu đen.", "Hổ có da vằn như lông.", "Mây nặng khoảng 500 tấn.", "Vàng có thể ăn được.", "Âm thanh dưới nước nhanh gấp 4 lần.", "Sao Kim ngày dài hơn năm.", "Koala có vân tay như người.", "Xương đùi cứng hơn bê tông.", "Trẻ em nhiều xương hơn người lớn.", "Não hoạt động mạnh hơn khi ngủ.", "Răng người cứng ngang đá.", "Bướm nếm bằng chân.", "Sao Thổ có mưa kim cương.", "Kiến có thể nhấc vật nặng gấp 50 lần.", "Mỗi người có một dấu lưỡi riêng.", "Cá vàng nhớ được vài tháng.", "Lạc đà có 3 mí mắt.", "Chuột sợ tiếng cười của chính mình.", "Bọ ngựa có tai ở giữa hai chân.", "Voi gọi nhau bằng hạ âm.", "Tàu vũ trụ đi qua sao Thổ mất 7 năm.", "Muỗi thích người nhóm máu O.", "Con người cao thêm vào buổi sáng.", "Trái tim đập 100.000 lần mỗi ngày.", "Sét đánh 100 lần mỗi giây.", "Kim cương là vật chất cứng nhất.", "Cá ngựa đực đẻ con.", "Bạch tuộc phun mực để chạy trốn.", "Gấu trúc ăn 12 tiếng mỗi ngày.", "Chim ruồi tim đập 1200 lần/phút."];
+        
+        let factPool = [...allFacts];
+        const paths = [[{t:6, l:44.5}, {t:13, l:44.5}, {t:20, l:44.5}, {t:27, l:44.5}, {t:34, l:44.5}, {t:41, l:38}, {t:41, l:31}, {t:41, l:24}, {t:41, l:17}, {t:41, l:10}],[{t:44.5, l:94}, {t:44.5, l:87}, {t:44.5, l:80}, {t:44.5, l:73}, {t:44.5, l:66}, {t:38, l:59}, {t:31, l:59}, {t:24, l:59}, {t:17, l:59}, {t:10, l:59}],[{t:55.5, l:6}, {t:55.5, l:13}, {t:55.5, l:20}, {t:55.5, l:27}, {t:55.5, l:34}, {t:62, l:41}, {t:69, l:41}, {t:76, l:41}, {t:83, l:41}, {t:90, l:41}],[{t:94, l:55.5}, {t:87, l:55.5}, {t:80, l:55.5}, {t:73, l:55.5}, {t:66, l:55.5}, {t:59, l:62}, {t:59, l:69}, {t:59, l:76}, {t:59, l:83}, {t:59, l:90}]];
+        const homePositions = [{t:[17,17,28,28], l:[17,28,17,28]}, {t:[17,17,28,28], l:[72,83,72,83]}, {t:[72,72,83,83], l:[17,28,17,28]}, {t:[72,72,83,83], l:[72,83,72,83]}];
+        
+        let turn = 0, currentDice = 0, itemsOnBoard = [], isSelectingTarget = false, factCallback = null;
         const teamNames = ["Luca", "Meco", "Nero", "Gumo"];
 
-        // --- CORE LOGIC ---
         window.onload = () => {
             document.getElementById('fill').style.width = '100%';
-            setTimeout(() => { document.getElementById('btn-start').style.display = 'block'; }, 2000); 
+            setTimeout(() => { document.getElementById('btn-start').style.display = 'block'; }, 2000);
         };
 
         function enterGame() {
-            try {
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('game-content').style.display = 'flex';
-                document.getElementById('game-content').style.opacity = '1';
-                init();
-            } catch(e) { console.error(e); }
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('game-content').style.display = 'flex';
+            init();
         }
 
         function init() {
             const box = document.getElementById('game-box');
             box.querySelectorAll('.pawn').forEach(p => p.remove());
-            const imgs = ['meo_den.png', 'meo_xiem.png', 'meo_vang.png', 'meo_trang.png'];
+            const colors = ['#000', '#ffeb3b', '#ff9800', '#fff']; // Màu thay cho ảnh nếu ảnh lỗi
             
-            imgs.forEach((img, tIdx) => {
+            for(let tIdx=0; tIdx<4; tIdx++) {
                 for(let i=0; i<4; i++) {
-                    const m = document.createElement('img');
-                    m.src = img; m.className = 'pawn';
-                    m.dataset.team = tIdx; m.dataset.id = i; m.dataset.step = -1; m.dataset.shield = 0;
+                    const m = document.createElement('div');
+                    m.className = 'pawn';
+                    m.style.backgroundColor = colors[tIdx];
+                    m.style.border = "2px solid #333";
+                    m.dataset.team = tIdx; m.dataset.id = i; m.dataset.step = -1;
                     resetToHome(m);
                     m.onclick = () => handlePawnClick(m);
                     box.appendChild(m);
                 }
-            });
+            }
             spawnItems();
             updatePawnStatus();
         }
@@ -254,8 +129,11 @@
 
         function handlePawnClick(m) {
             if (isSelectingTarget) {
-                if (parseInt(m.dataset.team) !== turn && parseInt(m.dataset.step) !== -1 && parseInt(m.dataset.shield) === 0) {
-                    kickPawn(m);
+                if (parseInt(m.dataset.team) !== turn && parseInt(m.dataset.step) !== -1) {
+                    resetToHome(m);
+                    document.querySelectorAll('.pawn').forEach(p => p.classList.remove('targetable'));
+                    isSelectingTarget = false;
+                    endTurn();
                 }
                 return;
             }
@@ -267,22 +145,20 @@
             let nextStep = parseInt(m.dataset.step) + currentDice;
             if (nextStep >= paths[turn].length) {
                 resetToHome(m);
-                showFact(() => { endTurn(); });
-                return; 
+                showFact(() => endTurn());
+                return;
             }
-
             m.dataset.step = nextStep;
             m.style.top = paths[turn][nextStep].t + "%";
             m.style.left = paths[turn][nextStep].l + "%";
 
             let fIdx = itemsOnBoard.findIndex(it => it.team === turn && it.step === nextStep);
             if (fIdx !== -1) {
-                let item = itemsOnBoard[fIdx];
+                let type = itemsOnBoard[fIdx].type;
                 itemsOnBoard.splice(fIdx, 1);
                 renderItems();
                 showFact(() => {
-                    if (item.type === 'fish') { startKickMode(); } 
-                    else { m.dataset.shield = 2; m.classList.add('shielded'); endTurn(); }
+                    if (type === 'fish') startKickMode(); else endTurn();
                 });
             } else {
                 setTimeout(endTurn, 400);
@@ -293,26 +169,18 @@
             isSelectingTarget = true;
             let count = 0;
             document.querySelectorAll('.pawn').forEach(p => {
-                if (parseInt(p.dataset.team) !== turn && parseInt(p.dataset.step) !== -1 && parseInt(p.dataset.shield) === 0) {
+                if (parseInt(p.dataset.team) !== turn && parseInt(p.dataset.step) !== -1) {
                     p.classList.add('targetable'); count++;
                 }
             });
-            if (count === 0) { alert("Không có ai để đá!"); endTurn(); }
-            else { document.getElementById('turn-display').innerText = "ĐÁ ĐỐI THỦ!"; }
-        }
-
-        function kickPawn(m) {
-            resetToHome(m);
-            document.querySelectorAll('.pawn').forEach(p => p.classList.remove('targetable'));
-            isSelectingTarget = false;
-            endTurn();
+            if (count === 0) endTurn();
         }
 
         function resetToHome(m) {
             let t = parseInt(m.dataset.team), id = parseInt(m.dataset.id);
             m.style.top = homePositions[t].t[id] + "%";
             m.style.left = homePositions[t].l[id] + "%";
-            m.dataset.step = -1; m.dataset.shield = 0; m.classList.remove('shielded');
+            m.dataset.step = -1;
         }
 
         function endTurn() {
@@ -320,24 +188,18 @@
             document.getElementById('roll-btn').disabled = false;
             turn = (turn + 1) % 4;
             document.getElementById('turn-display').innerText = teamNames[turn];
-            document.querySelectorAll(`.pawn[data-team="${turn}"]`).forEach(p => {
-                let s = parseInt(p.dataset.shield);
-                if (s > 0) { p.dataset.shield = s - 1; if (s-1 === 0) p.classList.remove('shielded'); }
-            });
             updatePawnStatus();
         }
 
-        // --- UI UTILS ---
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
         function showFact(callback) {
             factCallback = callback;
-            document.getElementById('fact-txt').innerText = allFacts[Math.floor(Math.random()*allFacts.length)];
+            if (factPool.length === 0) factPool = [...allFacts];
+            const idx = Math.floor(Math.random() * factPool.length);
+            document.getElementById('fact-txt').innerText = factPool.splice(idx, 1)[0];
             openModal('fact-modal');
             let s = 5;
             const btn = document.getElementById('ok-btn');
-            btn.disabled = true; btn.style.background = "#bbb"; btn.innerText = "ĐANG ĐỌC...";
+            btn.disabled = true; btn.style.background = "#bbb";
             const timer = setInterval(() => {
                 s--; document.getElementById('timer-display').innerText = s;
                 if(s <= 0) { clearInterval(timer); btn.disabled = false; btn.style.background = "#9292ff"; btn.innerText = "XÁC NHẬN"; }
@@ -345,45 +207,33 @@
         }
 
         function closeFact() { closeModal('fact-modal'); if (factCallback) factCallback(); }
-
         function spawnItems() {
-            itemsOnBoard = []; let pool = [];
-            paths.forEach((path, t) => path.forEach((pos, s) => { if (s > 0 && s < 8) pool.push({team: t, step: s, pos: pos}); }));
-            pool.sort(() => Math.random() - 0.5);
-            for(let i=0; i<15; i++) { if (pool[i]) itemsOnBoard.push({ ...pool[i], type: Math.random() > 0.5 ? 'fish' : 'cheese'}); }
+            itemsOnBoard = [];
+            for(let i=0; i<10; i++) {
+                itemsOnBoard.push({ team: Math.floor(Math.random()*4), step: Math.floor(Math.random()*7)+1, type: Math.random()>0.5?'fish':'cheese' });
+            }
             renderItems();
         }
-
         function renderItems() {
             const layer = document.getElementById('items-layer');
             layer.innerHTML = '';
             itemsOnBoard.forEach(it => {
                 const div = document.createElement('div');
                 div.className = 'item';
-                div.style.backgroundImage = `url(${it.type === 'fish' ? 'image_492b85.png' : 'image_492b6a.png'})`;
-                div.style.top = it.pos.t + "%"; div.style.left = it.pos.l + "%";
+                div.style.top = paths[it.team][it.step].t + "%";
+                div.style.left = paths[it.team][it.step].l + "%";
                 layer.appendChild(div);
             });
         }
-
         function updatePawnStatus() {
             document.querySelectorAll('.pawn').forEach(p => {
-                let isMyTurn = parseInt(p.dataset.team) === turn;
-                p.classList.toggle('active', isMyTurn);
-                p.style.opacity = isMyTurn ? "1" : "0.4";
+                p.classList.toggle('active', parseInt(p.dataset.team) === turn);
+                p.style.opacity = parseInt(p.dataset.team) === turn ? "1" : "0.5";
             });
         }
-
-        function toggleMusic() {
-            const m = document.getElementById('bgMusic');
-            const b = document.getElementById('music-toggle');
-            if (m.paused) { m.play(); b.innerText = "BẬT"; b.style.background = "#4caf50"; }
-            else { m.pause(); b.innerText = "TẮT"; b.style.background = "#ff5252"; }
-        }
-
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href).then(() => alert("Đã copy link! 🐱"));
-        }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function copyLink() { navigator.clipboard.writeText(window.location.href).then(() => alert("Đã copy link!")); }
     </script>
 </body>
 </html>
