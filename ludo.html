@@ -4,150 +4,121 @@
     <meta charset="UTF-8">
     <title>Ludo Of Facts - Class 7A5</title>
     <style>
-        :root { --dp: #9292ff; --bg: #f3f0ff; --p: #bdb2ff; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', sans-serif; background: #fce4ec; }
+        :root { --p: #bdb2ff; --dp: #9292ff; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #fce4ec; font-family: 'Segoe UI', sans-serif; }
 
-        /* MÀN HÌNH CHỜ - BẢN ỔN ĐỊNH NHẤT */
+        /* MÀN HÌNH CHỜ */
         #loading-screen { 
             position: fixed; inset: 0; 
             background: #fce4ec url('image_d98ded.jpg') no-repeat center top; 
-            background-size: cover; /* Phủ kín màn hình như bản bạn thấy ổn */
-            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            background-size: contain; z-index: 9999; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 50px;
         }
-
-        /* Nút Enter Game tàng hình đè lên đúng vị trí trong ảnh */
-        #invisible-start-btn {
-            position: absolute; bottom: 12%; width: 250px; height: 80px;
-            background: rgba(0,0,0,0); cursor: pointer; border: none; z-index: 10000;
+        #real-start-btn {
+            padding: 15px 50px; font-size: 24px; font-weight: bold; color: white;
+            background: #4CAF50; border: 4px solid white; border-radius: 15px;
+            cursor: pointer; box-shadow: 0 6px 0 #388E3C; transition: 0.1s;
         }
+        #real-start-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #388E3C; }
 
-        /* GIAO DIỆN GAME CHÍNH */
-        #game-content { display: none; width: 100vw; height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); }
-        
-        /* BÀN CỜ CHUẨN board.png */
+        /* GIAO DIỆN CHÍNH */
+        #game-content { display: none; width: 100vw; height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: #f3f0ff; }
         #game-box { 
             position: relative; width: 85vh; height: 85vh; 
             background: white url('board.png') no-repeat center center; 
-            background-size: 100% 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background-size: 100% 100%; border-radius: 20px;
         }
 
-        /* QUÂN MÈO */
-        .pawn { width: 5vh; height: 5vh; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: all 0.4s ease; }
-        .pawn.active { filter: drop-shadow(0 0 15px var(--dp)); animation: bounce 0.6s infinite alternate; }
-        @keyframes bounce { from { margin-top: 0; } to { margin-top: -8px; } }
+        /* MÈO ĐÃ ĐƯỢC PHÓNG TO */
+        .pawn { width: 9vh; height: 9vh; position: absolute; z-index: 100; cursor: pointer; transform: translate(-50%, -50%); transition: 0.4s; }
+        .pawn.active { filter: drop-shadow(0 0 10px gold); animation: bounce 0.5s infinite alternate; }
+        @keyframes bounce { from { margin-top: 0; } to { margin-top: -10px; } }
+
+        /* ITEM PHÔ MAI & CÁ */
+        .item { position: absolute; width: 6vh; height: 6vh; z-index: 50; transform: translate(-50%, -50%); }
 
         /* UI ĐIỀU KHIỂN */
-        .corner-btn { position: absolute; top: 20px; width: 50px; height: 50px; background: white; border: 3px solid var(--p); border-radius: 50%; cursor: pointer; z-index: 5000; font-size: 24px; display: flex; align-items: center; justify-content: center; }
+        .ui-btn { position: absolute; top: 20px; width: 55px; height: 55px; background: white; border: 3px solid var(--p); border-radius: 50%; cursor: pointer; font-size: 25px; display: flex; align-items: center; justify-content: center; }
         .bottom-ui { margin-top: 15px; display: flex; align-items: center; gap: 20px; background: white; padding: 10px 40px; border-radius: 50px; border: 3px solid var(--p); }
-        #dice-res { font-size: 35px; font-weight: bold; min-width: 50px; text-align: center; }
         #roll-btn { padding: 12px 35px; background: var(--dp); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; }
 
-        /* BẢNG THÔNG BÁO (MODAL) */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .card { background: white; width: 380px; padding: 30px; border-radius: 30px; border: 6px solid var(--p); text-align: center; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9000; align-items: center; justify-content: center; }
+        .card { background: white; width: 400px; padding: 30px; border-radius: 30px; border: 6px solid var(--p); }
     </style>
 </head>
 <body>
 
     <div id="loading-screen">
-        <button id="invisible-start-btn" onclick="enterGame()"></button>
+        <button id="real-start-btn" onclick="enterGame()">ENTER GAME</button>
     </div>
-
-    <button class="corner-btn" style="left: 20px;" onclick="openModal('settings-modal')">⚙️</button>
-    <button class="corner-btn" style="right: 20px;" onclick="openModal('help-modal')">?</button>
 
     <div id="game-content">
-        <div style="background: white; padding: 8px 30px; border-radius: 20px; margin-bottom: 10px; border: 2px solid var(--p); font-weight: bold; color: var(--dp);">
-            Lượt: <span id="turn-display">Luca</span>
-        </div>
-        
+        <button class="ui-btn" style="left: 20px;" onclick="openM('s')">⚙️</button>
+        <button class="ui-btn" style="right: 20px;" onclick="openM('h')">❓</button>
         <div id="game-box"></div>
-
         <div class="bottom-ui">
-            <div id="dice-res">🎲</div>
-            <button id="roll-btn" onclick="rollDice()">ĐỔ XÚC XẮC</button>
+            <div id="dice-res" style="font-size: 30px;">🎲</div>
+            <button id="roll-btn" onclick="rollD()">ĐỔ XÚC XẮC</button>
         </div>
     </div>
 
-    <div id="help-modal" class="modal" onclick="closeModal('help-modal')">
+    <div id="h" class="modal" onclick="this.style.display='none'">
         <div class="card" onclick="event.stopPropagation()">
-            <h2 style="color: var(--dp)">📜 HƯỚNG DẪN</h2>
-            <p>1. Nhấn nút Đổ xúc xắc.<br>2. Chọn quân mèo đang nhảy để di chuyển.<br>3. Về đích để chiến thắng!</p>
-            <button onclick="closeModal('help-modal')" style="background: var(--dp); color: white; border: none; padding: 10px 30px; border-radius: 15px; cursor: pointer;">ĐÃ HIỂU</button>
+            <h2 style="color:var(--dp); text-align:center;">📜 HƯỚNG DẪN</h2>
+            <p>🧀 <b>Phô mai:</b> Đi thêm lượt.</p>
+            <p>🐟 <b>Cá:</b> Nhảy thêm 2 ô.</p>
+            <p>💡 <b>Facts:</b> Trả lời đúng kiến thức ở ô cuối để thắng!</p>
+            <button onclick="closeM('h')" style="width:100%; padding:10px; background:var(--dp); color:white; border:none; border-radius:10px;">ĐÃ HIỂU</button>
         </div>
     </div>
 
-    <div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
+    <div id="s" class="modal" onclick="this.style.display='none'">
         <div class="card" onclick="event.stopPropagation()">
-            <h2 style="color: var(--dp)">⚙️ THÔNG TIN</h2>
-            <p>Dự án: <b>Ludo Of Facts</b><br>Nhóm: <b>Sang - Giang - Đan (7A5)</b></p>
-            <button onclick="closeModal('settings-modal')" style="background: #eee; border: none; padding: 10px 30px; border-radius: 15px; cursor: pointer;">ĐÓNG</button>
+            <h2 style="color:var(--dp); text-align:center;">⚙️ CÀI ĐẶT</h2>
+            <button id="m-toggle" onclick="toggleM()" style="width:100%; padding:15px; border-radius:15px; border:2px solid var(--p); cursor:pointer;">ÂM THANH: BẬT ✅</button>
+            <p style="text-align:center; color:#888; margin-top:20px;">Sang - Giang - Đan (7A5)</p>
         </div>
     </div>
 
     <audio id="bgMusic" loop src="pixel-drift-pecan-pie-main-version-41106-02-09.mp3"></audio>
 
     <script>
-        let turn = 0;
-        let diceValue = 0;
+        let turn = 0, dice = 0, musicOn = true;
         const teams = ["Luca", "Meco", "Nero", "Gumo"];
-        const pawnFiles = ['meo_den.png', 'meo_xiem.png', 'meo_vang.png', 'meo_trang.png'];
-        
-        // Tọa độ CHUỒNG căn chỉnh chuẩn cho board.png
-        const homeCoords = [
-            {t:[20,20,30,30], l:[20,30,20,30]}, {t:[20,20,30,30], l:[70,80,70,80]},
-            {t:[70,70,80,80], l:[20,30,20,30]}, {t:[70,70,80,80], l:[70,80,70,80]}
-        ];
+        const pFiles = ['meo_den.png', 'meo_xiem.png', 'meo_vang.png', 'meo_trang.png'];
+        const items = ['image_492b6a.png', 'image_492b85.png'];
 
         function enterGame() {
             document.getElementById('loading-screen').style.display = 'none';
             document.getElementById('game-content').style.display = 'flex';
-            document.getElementById('bgMusic').play().catch(() => {});
-            initGame();
+            document.getElementById('bgMusic').play().catch(()=>{});
+            init();
         }
 
-        function initGame() {
-            const box = document.getElementById('game-box');
-            box.innerHTML = '';
-            for(let t=0; t<4; t++) {
-                for(let i=0; i<4; i++) {
-                    const p = document.createElement('img');
-                    p.src = pawnFiles[t];
-                    p.className = 'pawn';
-                    p.dataset.team = t;
-                    p.style.top = homeCoords[t].t[i] + "%";
-                    p.style.left = homeCoords[t].l[i] + "%";
-                    p.onclick = () => movePawn(p);
-                    box.appendChild(p);
-                }
+        function init() {
+            const b = document.getElementById('game-box'); b.innerHTML = '';
+            // Rải Phô mai và Cá
+            for(let i=0; i<8; i++) {
+                const img = document.createElement('img');
+                img.src = items[i % 2]; img.className = 'item';
+                img.style.top = (25 + Math.random()*50) + '%';
+                img.style.left = (25 + Math.random()*50) + '%';
+                b.appendChild(img);
+            }
+            // Tạo 4 đội mèo TO
+            const h = [{t:[20,20,32,32],l:[20,32,20,32]},{t:[20,20,32,32],l:[68,80,68,80]},{t:[68,68,80,80],l:[20,32,20,32]},{t:[68,68,80,80],l:[68,80,68,80]}];
+            for(let t=0; t<4; t++) for(let i=0; i<4; i++) {
+                const p = document.createElement('img'); p.src = pFiles[t]; p.className = 'pawn';
+                p.style.top = h[t].t[i]+'%'; p.style.left = h[t].l[i]+'%';
+                p.onclick = () => { if(t===turn && dice>0) { p.style.top='48%'; p.style.left='48%'; dice=0; turn=(turn+1)%4; document.querySelectorAll('.pawn').forEach(x=>x.classList.remove('active')); } };
+                b.appendChild(p);
             }
         }
 
-        function rollDice() {
-            if(diceValue !== 0) return;
-            diceValue = Math.floor(Math.random() * 6) + 1;
-            document.getElementById('dice-res').innerText = diceValue;
-            document.querySelectorAll(`.pawn[data-team="${turn}"]`).forEach(p => p.classList.add('active'));
-        }
-
-        function movePawn(p) {
-            if(parseInt(p.dataset.team) !== turn || diceValue === 0) return;
-            
-            // Logic di chuyển mèo ra một ô xuất phát (tỷ lệ %)
-            const starts = [{t:45, l:42}, {t:42, l:58}, {t:58, l:42}, {t:55, l:58}];
-            p.style.top = starts[turn].t + "%";
-            p.style.left = starts[turn].l + "%";
-            
-            // Kết thúc lượt
-            diceValue = 0;
-            document.getElementById('dice-res').innerText = "🎲";
-            document.querySelectorAll('.pawn').forEach(p => p.classList.remove('active'));
-            turn = (turn + 1) % 4;
-            document.getElementById('turn-display').innerText = teams[turn];
-        }
-
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function rollD() { if(dice!==0) return; dice=Math.floor(Math.random()*6)+1; document.getElementById('dice-res').innerText=dice; document.querySelectorAll('.pawn').forEach(p=> { if(p.src.includes(pFiles[turn])) p.classList.add('active'); }); }
+        function toggleM() { const a = document.getElementById('bgMusic'); if(musicOn){ a.pause(); document.getElementById('m-toggle').innerText="ÂM THANH: TẮT ❌"; } else { a.play(); document.getElementById('m-toggle').innerText="ÂM THANH: BẬT ✅"; } musicOn=!musicOn; }
+        function openM(id){ document.getElementById(id).style.display='flex'; }
+        function closeM(id){ document.getElementById(id).style.display='none'; }
     </script>
 </body>
 </html>
