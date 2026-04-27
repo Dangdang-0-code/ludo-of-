@@ -75,7 +75,30 @@
             <button onclick="closeModal('help-modal')" style="margin-top: 15px; padding: 10px 25px; background: var(--dp); color: white; border: none; border-radius: 15px;">ĐÃ HIỂU</button>
         </div>
     </div>
+<div id="settings-modal" class="modal" onclick="closeModal('settings-modal')">
+        <div class="card" onclick="event.stopPropagation()">
+            <h2 style="color: var(--dp); margin-top:0;">⚙️ CÀI ĐẶT</h2>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0; padding: 12px; background: #f8f9fa; border-radius: 15px;">
+                <span style="font-weight: bold; color: #555;">Âm thanh</span>
+                <button id="music-toggle" onclick="toggleMusic()" style="border: none; background: #ff5252; color: white; padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: bold;">TẮT</button>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0; padding: 12px; background: #f8f9fa; border-radius: 15px;">
+                <span style="font-weight: bold; color: #555;">Chia sẻ game</span>
+                <button onclick="copyLink()" style="border: none; background: var(--dp); color: white; padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: bold;">COPY LINK</button>
+            </div>
 
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+                <p style="margin: 0; font-size: 13px; color: #888;">SẢN PHẨM BỞI:</p>
+                <p style="font-size: 18px; color: var(--dp); font-weight: 900; margin: 5px 0; letter-spacing: 1px;">SANG - GIANG - ĐAN</p>
+                <p style="font-size: 11px; color: #aaa;">Ludo Of Facts - Class 7A5</p>
+            </div>
+            
+            <button onclick="closeModal('settings-modal')" style="background: #eee; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 15px; font-weight: bold; color: #666;">ĐÓNG</button>
+        </div>
+    </div>
+    
     <div id="fact-modal" class="modal">
         <div class="card">
             <h3 style="color: var(--dp)">💡 BẠN CÓ BIẾT?</h3>
@@ -297,9 +320,28 @@
                 p.style.opacity = isMyTurn ? "1" : "0.4";
             });
         }
-
+        
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function toggleMusic() {
+    const music = document.getElementById('bgMusic');
+    const btn = document.getElementById('music-toggle');
+    if (music.paused) {
+        music.play().catch(() => alert("Nhấp vào màn hình một cái rồi hãy bật nhạc nha!"));
+        btn.innerText = "BẬT";
+        btn.style.background = "#4caf50";
+    } else {
+        music.pause();
+        btn.innerText = "TẮT";
+        btn.style.background = "#ff5252";
+    }
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        alert("Đã copy link game rồi nhé! 🐱");
+    });
+}
     </script>
 </body>
 </html>
